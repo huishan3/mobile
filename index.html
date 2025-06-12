@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Melody Beans</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
       html {
         scroll-behavior: smooth;
       }
       body {
-        /* 使用原生標楷體，並提供 fallback 字體 */
-        font-family: 'DFKai-SB', '標楷體', cursive, sans-serif;
+        /* 使用 Noto Sans TC 作為主要字體，並提供 fallback 字體 */
+        font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
         background-color: #fdfaf5;
         background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-        background-size: cover; /* 確保背景圖覆蓋整個頁面 */
-        background-attachment: fixed; /* 背景固定，滾動時有視差效果 */
+        background-size: cover;
+        background-attachment: fixed;
         color: #3f2e2e;
       }
       .staff-lines {
@@ -142,17 +143,18 @@
     <section id="cart" class="py-16 bg-[#fff9f0] fade-up">
       <div class="max-w-[900px] mx-auto px-6">
         <h2 class="text-2xl mb-4">🛒 購物車</h2>
-        <table class="w-full border text-left cart-table">
-          <thead>
-            <tr class="bg-[#f5efe6]">
-              <th class="p-2 border">商品</th>
-              <th class="p-2 border">數量</th>
-              <th class="p-2 border">單價</th>
-              <th class="p-2 border">小計</th>
-            </tr>
-          </thead>
-          <tbody id="cart-body"></tbody>
-        </table>
+        <div class="overflow-x-auto"> <table class="w-full border text-left cart-table">
+            <thead>
+              <tr class="bg-[#f5efe6]">
+                <th class="p-2 border whitespace-nowrap">商品</th>
+                <th class="p-2 border whitespace-nowrap">數量</th>
+                <th class="p-2 border whitespace-nowrap">單價</th>
+                <th class="p-2 border whitespace-nowrap">小計</th>
+              </tr>
+            </thead>
+            <tbody id="cart-body"></tbody>
+          </table>
+        </div>
         <p class="text-right mt-4 font-bold">總金額：<span id="total-amount">NT$0</span></p>
         <div class="text-right mt-4">
           <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-6 py-2 rounded">結帳</button>
@@ -262,7 +264,6 @@
     </div>
   </body>
 </html>
-
 <script>
   // Global cart object
   let cart = {};
@@ -550,7 +551,7 @@
       expiry: '2025/08/15',
       price: 1800,
       category: 'light',
-      image: './image/image_8.png'
+      image: './image_8.png'
     }
   ];
 
@@ -702,5 +703,26 @@
       }
       return total;
   }
+
+  // Added function to close mobile menu when a nav link is clicked
+  // Ensuring this is declared in a way that onclick can access it
+  window.closeMenu = function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+    }
+  };
+
+  // Toggle mobile menu for the hamburger icon
+  document.addEventListener('DOMContentLoaded', () => { // Ensure this runs after DOM is ready
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
 
 </script>
