@@ -5,81 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Melody Beans</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        /* 使用 Noto Sans TC 作為主要字體，並提供 fallback 字體 */
-        font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-        background-color: #fdfaf5;
-        background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-        background-size: cover;
-        background-attachment: fixed;
-        color: #3f2e2e;
-      }
-      .staff-lines {
-        background-image: linear-gradient(to bottom, transparent 18%, #ccc 18%, #ccc 19%, transparent 19%, transparent 38%, #ccc 38%, #ccc 39%, transparent 39%, transparent 58%, #ccc 58%, #ccc 59%, transparent 59%, transparent 78%, #ccc 78%, #ccc 79%, transparent 79%);
-        background-size: 100% 100px;
-        background-repeat: repeat-y;
-        opacity: 0.05;
-      }
-      .floating-note {
-        position: absolute;
-        animation: floatNote 6s ease-in-out infinite;
-        font-size: 1.5rem;
-        color: #b58863;
-        opacity: 0;
-      }
-      @keyframes floatNote {
-        0% { transform: translateY(20px); opacity: 0; }
-        50% { opacity: 0.6; }
-        100% { transform: translateY(-100px); opacity: 0; }
-      }
-      .fade-up {
-        opacity: 0;
-        transform: translateY(60px);
-        transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-      }
-      .fade-up.active {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .floating-cart {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background-color: #b58863;
-        color: white;
-        border-radius: 9999px;
-        padding: 16px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        font-size: 1.5rem;
-        z-index: 1000;
-        transition: transform 0.3s ease-in-out;
-      }
-      .floating-cart:hover {
-        transform: scale(1.1);
-      }
-      .ornate-box {
-        border: 2px solid #b58863;
-        border-radius: 1rem;
-        background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* 卡片內部維持木紋 */
-        background-size: cover;
-        padding: 1rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-      /* Custom styles for table cells */
-      .cart-table td {
-        padding: 8px; /* Add some padding */
-        vertical-align: middle; /* Align content vertically */
-      }
-      /* Checkout Modal Background Blur */
-      #checkoutModal {
-        backdrop-filter: blur(5px); /* Add this for blur effect on the background */
-      }
+        /* Define 標楷體 as a web font */
+        @font-face {
+            font-family: 'BiaoKaiTiWeb'; /* This is the name you'll use in your CSS */
+            src: url('./fonts/BiaoKaiTi.woff2') format('woff2'), /* Path to your WOFF2 font file */
+                 url('./fonts/BiaoKaiTi.woff') format('woff'),   /* Path to your WOFF font file */
+                 url('./fonts/DFKai-SB.ttf') format('truetype'); /* Fallback to TTF if needed, ensure path is correct */
+            font-weight: normal; /* 標楷體 typically has one weight */
+            font-style: normal;
+            font-display: swap; /* Very important: Shows fallback text while font loads */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            /* Set the body font to your custom web font first, then system fallbacks */
+            font-family: 'BiaoKaiTiWeb', 'DFKai-SB', '標楷體', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #fdfaf5;
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #3f2e2e;
+        }
+        .staff-lines {
+            background-image: linear-gradient(to bottom, transparent 18%, #ccc 18%, #ccc 19%, transparent 19%, transparent 38%, #ccc 38%, #ccc 39%, transparent 39%, transparent 58%, #ccc 58%, #ccc 59%, transparent 59%, transparent 78%, #ccc 78%, #ccc 79%, transparent 79%);
+            background-size: 100% 100px;
+            background-repeat: repeat-y;
+            opacity: 0.05;
+        }
+        .floating-note {
+            position: absolute;
+            animation: floatNote 6s ease-in-out infinite;
+            font-size: 1.5rem;
+            color: #b58863;
+            opacity: 0;
+        }
+        @keyframes floatNote {
+            0% { transform: translateY(20px); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .floating-cart {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #b58863;
+            color: white;
+            border-radius: 9999px;
+            padding: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Added opacity for smooth hide/show */
+        }
+        .floating-cart:hover {
+            transform: scale(1.1);
+        }
+        /* Style for when floating cart is hidden */
+        .floating-cart.hidden-scroll {
+            opacity: 0;
+            pointer-events: none; /* Make it unclickable when hidden */
+        }
+
+        .ornate-box {
+            border: 2px solid #b58863;
+            border-radius: 1rem;
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* 卡片內部維持木紋 */
+            background-size: cover;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom styles for table cells */
+        .cart-table td {
+            padding: 8px; /* Add some padding */
+            vertical-align: middle; /* Align content vertically */
+        }
+        /* Checkout Modal Background Blur */
+        #checkoutModal {
+            backdrop-filter: blur(5px); /* Add this for blur effect on the background */
+        }
     </style>
   </head>
   <body class="text-[#3f2e2e]">
@@ -270,6 +286,10 @@
   // Review functions (add localStorage for persistence)
   let reviews = [];
 
+  // Variables for floating cart visibility
+  let lastScrollY = 0;
+  const floatingCart = document.getElementById('floatingCart');
+
   window.addEventListener('DOMContentLoaded', () => {
     const fadeSections = document.querySelectorAll('.fade-up');
     const observer = new IntersectionObserver((entries) => {
@@ -350,6 +370,19 @@
     // Initial load of reviews
     loadReviews();
     renderReviews();
+
+    // Floating cart visibility on scroll
+    window.addEventListener('scroll', () => {
+        if (floatingCart) {
+            if (window.scrollY > lastScrollY && window.scrollY > 100) { // Scrolling down and past initial 100px
+                floatingCart.classList.add('hidden-scroll');
+            } else { // Scrolling up
+                floatingCart.classList.remove('hidden-scroll');
+            }
+            lastScrollY = window.scrollY;
+        }
+    });
+
   });
 
   // 新增的結帳彈窗相關函數
@@ -551,7 +584,7 @@
       expiry: '2025/08/15',
       price: 1800,
       category: 'light',
-      image: './image_8.png'
+      image: './image/image_8.png'
     }
   ];
 
@@ -704,8 +737,7 @@
       return total;
   }
 
-  // Added function to close mobile menu when a nav link is clicked
-  // Ensuring this is declared in a way that onclick can access it
+  // Function to close mobile menu when a nav link is clicked
   window.closeMenu = function() {
     const mobileMenu = document.getElementById('mobile-menu');
     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
@@ -713,8 +745,8 @@
     }
   };
 
-  // Toggle mobile menu for the hamburger icon
-  document.addEventListener('DOMContentLoaded', () => { // Ensure this runs after DOM is ready
+  // Toggle mobile menu for the hamburger icon (on DOMContentLoaded)
+  document.addEventListener('DOMContentLoaded', () => {
     const menuButton = document.getElementById('menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
