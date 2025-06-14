@@ -6,111 +6,218 @@
     <title>Melody Beans</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Define 標楷體 as a web font */
-        @font-face {
-            font-family: 'BiaoKaiTiWeb'; /* This is the name you'll use in your CSS */
-            src: url('./fonts/BiaoKaiTi.woff2') format('woff2'), /* Path to your WOFF2 font file */
-                 url('./fonts/BiaoKaiTi.woff') format('woff'),   /* Path to your WOFF font file */
-                 url('./fonts/DFKai-SB.ttf') format('truetype'); /* Fallback to TTF if needed, ensure path is correct */
-            font-weight: normal; /* 標楷體 typically has one weight */
-            font-style: normal;
-            font-display: swap; /* Very important: Shows fallback text while font loads */
-        }
+      /* Define 標楷體 as a web font */
+      @font-face {
+        font-family: 'BiaoKaiTiWeb'; /* This is the name you'll use in your CSS */
+        src: url('./fonts/BiaoKaiTi.woff2') format('woff2'), /* Path to your WOFF2 font file */
+             url('./fonts/BiaoKaiTi.woff') format('woff'),    /* Path to your WOFF font file */
+             url('./fonts/DFKai-SB.ttf') format('truetype'); /* Fallback to TTF if needed, ensure path is correct */
+        font-weight: normal; /* 標楷體 typically has one weight */
+        font-style: normal;
+        font-display: swap; /* Very important: Shows fallback text while font loads */
+      }
 
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            /* Set the body font to your custom web font first, then system fallbacks */
-            font-family: 'BiaoKaiTiWeb', 'DFKai-SB', '標楷體', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            background-color: #fdfaf5;
-            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-            background-size: cover;
-            background-attachment: fixed;
-            color: #3f2e2e;
-        }
-        .staff-lines {
-            background-image: linear-gradient(to bottom, transparent 18%, #ccc 18%, #ccc 19%, transparent 19%, transparent 38%, #ccc 38%, #ccc 39%, transparent 39%, transparent 58%, #ccc 58%, #ccc 59%, transparent 59%, transparent 78%, #ccc 78%, #ccc 79%, transparent 79%);
-            background-size: 100% 100px;
-            background-repeat: repeat-y;
-            opacity: 0.05;
-        }
-        .floating-note {
-            position: absolute;
-            animation: floatNote 6s ease-in-out infinite;
-            font-size: 1.5rem;
-            color: #b58863;
-            opacity: 0;
-        }
-        @keyframes floatNote {
-            0% { transform: translateY(20px); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-100px); opacity: 0; }
-        }
-        .fade-up {
-            opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-        }
-        .fade-up.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .floating-cart {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background-color: #b58863;
-            color: white;
-            border-radius: 9999px;
-            padding: 16px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 1000;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Added opacity for smooth hide/show */
-        }
-        .floating-cart:hover {
-            transform: scale(1.1);
-        }
-        /* Style for when floating cart is hidden */
-        .floating-cart.hidden-scroll {
-            opacity: 0;
-            pointer-events: none; /* Make it unclickable when hidden */
-        }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        /* Set the body font to your custom web font first, then system fallbacks */
+        font-family: 'BiaoKaiTiWeb', 'DFKai-SB', '標楷體', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        background-color: #fdfaf5;
+        background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+        background-size: cover;
+        background-attachment: fixed;
+        color: #3f2e2e;
+      }
+      .staff-lines {
+        background-image: linear-gradient(to bottom, transparent 18%, #ccc 18%, #ccc 19%, transparent 19%, transparent 38%, #ccc 38%, #ccc 39%, transparent 39%, transparent 58%, #ccc 58%, #ccc 59%, transparent 59%, transparent 78%, #ccc 78%, #ccc 79%, transparent 79%);
+        background-size: 100% 100px;
+        background-repeat: repeat-y;
+        opacity: 0.05;
+      }
+      .floating-note {
+        position: absolute;
+        animation: floatNote 6s ease-in-out infinite;
+        font-size: 1.5rem;
+        color: #b58863;
+        opacity: 0;
+      }
+      @keyframes floatNote {
+        0% { transform: translateY(20px); opacity: 0; }
+        50% { opacity: 0.6; }
+        100% { transform: translateY(-100px); opacity: 0; }
+      }
+      .fade-up {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+      }
+      .fade-up.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .floating-cart {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background-color: #b58863;
+        color: white;
+        border-radius: 9999px;
+        padding: 16px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        font-size: 1.5rem;
+        z-index: 1000;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Added opacity for smooth hide/show */
+      }
+      .floating-cart:hover {
+        transform: scale(1.1);
+      }
+      /* 浮動購物車彈跳動畫 */
+      @keyframes pop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+        100% { transform: scale(1); }
+      }
+      .animate-pop {
+        animation: pop 0.3s ease-out;
+      }
 
-        .ornate-box {
-            border: 2px solid #b58863;
-            border-radius: 1rem;
-            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* 卡片內部維持木紋 */
-            background-size: cover;
-            padding: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      .ornate-box {
+        border: 2px solid #b58863;
+        border-radius: 1rem;
+        background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* 卡片內部維持木紋 */
+        background-size: cover;
+        padding: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 添加陰影過渡 */
+      }
+      .ornate-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* 懸停時陰影變大變深 */
+      }
+      /* Custom styles for table cells */
+      .cart-table td {
+        padding: 8px; /* Add some padding */
+        vertical-align: middle; /* Align content vertically */
+      }
+      /* Checkout Modal Background Blur */
+      #checkoutModal {
+        backdrop-filter: blur(5px); /* Add this for blur effect on the background */
+      }
+      /* 導航連結 Hover 效果 */
+      .navbar-link-hover:hover {
+        color: #b58863; /* 改變文字顏色 */
+        transition: color 0.3s ease-in-out; /* 平滑過渡 */
+      }
+      /* 按鈕點擊效果 */
+      .btn-press:active {
+        transform: translateY(1px); /* 輕微下壓 */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 陰影變小 */
+      }
+
+      /* 首頁背景樣式 */
+      #home {
+        background-image: url('./image/image_2.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* 調整為視窗高度 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 背景疊層 */
+      #home::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+      }
+
+      #home > * {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* 調整staff-lines透明度以適應深色背景 */
+      #home .staff-lines {
+        opacity: 0.15;
+        background-image: linear-gradient(to bottom, transparent 18%, rgba(255, 255, 255, 0.3) 18%, rgba(255, 255, 255, 0.3) 19%, transparent 19%, transparent 38%, rgba(255, 255, 255, 0.3) 38%, rgba(255, 255, 255, 0.3) 39%, transparent 39%, transparent 58%, rgba(255, 255, 255, 0.3) 58%, rgba(255, 255, 255, 0.3) 59%, transparent 59%, transparent 78%, rgba(255, 255, 255, 0.3) 78%, rgba(255, 255, 255, 0.3) 79%, transparent 79%);
+      }
+      /* 調整浮動音符的顏色以適應深色背景 */
+      #home .floating-note {
+          color: #f0e68c;
+      }
+
+      /* 為響應式設計調整主要內容區塊的內邊距 */
+      @media (max-width: 767px) { /* Small screens (mobile) */
+        .px-6 {
+          padding-left: 1rem; /* px-4 = 16px */
+          padding-right: 1rem;
         }
-        /* Custom styles for table cells */
-        .cart-table td {
-            padding: 8px; /* Add some padding */
-            vertical-align: middle; /* Align content vertically */
+        .text-5xl { /* 針對小螢幕調整標題大小 */
+          font-size: 2.5rem; /* 約 40px */
         }
-        /* Checkout Modal Background Blur */
-        #checkoutModal {
-            backdrop-filter: blur(5px); /* Add this for blur effect on the background */
+        .text-xl { /* 針對小螢幕調整副標題大小 */
+          font-size: 1.125rem; /* 約 18px */
         }
+      }
+
+      @media (min-width: 768px) and (max-width: 1023px) { /* Medium screens (tablet) */
+        .px-6 {
+          padding-left: 1.5rem; /* px-6 = 24px */
+          padding-right: 1.5rem;
+        }
+        .text-5xl {
+          font-size: 3.5rem; /* 約 56px */
+        }
+        .text-xl {
+          font-size: 1.25rem; /* 約 20px */
+        }
+      }
+
+      @media (min-width: 1024px) { /* Large screens (desktop) */
+        .px-6 {
+          padding-left: 1.5rem; /* px-6 = 24px */
+          padding-right: 1.5rem;
+        }
+        .text-5xl {
+          font-size: 4rem; /* 64px */
+        }
+        .text-xl {
+          font-size: 1.5rem; /* 24px */
+        }
+      }
+
     </style>
   </head>
   <body class="text-[#3f2e2e]">
     <nav class="bg-[#f5efe6] shadow-md sticky top-0 z-50 fade-up">
       <div class="max-w-[1200px] mx-auto flex justify-between items-center py-4 px-6">
-        <h1 class="text-2xl font-bold">🎼 Melody Beans</h1>
+        <div class="flex items-center">
+            <img src="./image/image_2.png" alt="Melody Beans Logo" class="h-10 mr-3" />
+            <h1 class="text-2xl font-bold">🎼 Melody Beans</h1>
+        </div>
         <button id="menu-button" class="md:hidden text-2xl px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#b58863] rounded">
           ☰
         </button>
         <ul id="navbar-links" class="hidden md:flex gap-6 text-lg">
-          <li><a href="#home" class="hover:underline" onclick="closeMenu()">首頁</a></li>
-          <li><a href="#products" class="hover:underline" onclick="closeMenu()">商品</a></li>
-          <li><a href="#cart" class="hover:underline" onclick="closeMenu()">購物車</a></li>
-          <li><a href="#review" class="hover:underline" onclick="closeMenu()">評論</a></li>
-          <li><a href="#about" class="hover:underline" onclick="closeMenu()">關於我們</a></li>
+          <li><a href="#home" class="hover:underline navbar-link-hover" onclick="closeMenu()">首頁</a></li>
+          <li><a href="#products" class="hover:underline navbar-link-hover" onclick="closeMenu()">商品</a></li>
+          <li><a href="#cart" class="hover:underline navbar-link-hover" onclick="closeMenu()">購物車</a></li>
+          <li><a href="#review" class="hover:underline navbar-link-hover" onclick="closeMenu()">評論</a></li>
+          <li><a href="#about" class="hover:underline navbar-link-hover" onclick="closeMenu()">關於我們</a></li>
         </ul>
         <button class="ml-4 text-sm underline hidden md:block">EN</button> </div>
       <div id="mobile-menu" class="hidden md:hidden bg-[#f5efe6] pb-4 px-6">
@@ -125,32 +232,36 @@
       </div>
     </nav>
 
-    <section id="home" class="bg-[#fffdf8] relative overflow-hidden flex flex-col items-center justify-center text-center py-16 min-h-screen fade-up">
+    <section id="home" class="fade-up">
       <div class="staff-lines absolute inset-0"></div>
       <div class="floating-note" style="top:65%;left:10%">𝄞</div>
       <div class="floating-note" style="top:75%;left:80%">♩</div>
       <div class="floating-note" style="top:70%;left:20%">♪</div>
       <div class="floating-note" style="top:80%;left:60%">♬</div>
-      <div class="max-w-[800px] px-6 z-10 flex-grow flex flex-col justify-center items-center">
-        <h2 class="text-5xl font-extrabold mb-4 drop-shadow">讓每一杯咖啡☕都有旋律🎵</h2>
-        <p class="text-xl text-[#6b4c3b] font-medium mb-8">結合咖啡的香與音樂的韻，啟動生活靈感。</p>
-      </div>
-      <div class="w-full mt-auto px-6 fade-up">
-        <img src="https://source.unsplash.com/featured/?coffee,barista,pour" alt="咖啡師沖煮咖啡" class="w-full h-96 object-cover rounded-xl shadow-lg" />
+
+      <div class="max-w-[800px] px-6 z-10 flex flex-col justify-center items-center text-center">
+        <h2 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 drop-shadow">讓每一杯咖啡☕都有旋律🎵</h2>
+        <p class="text-xl md:text-2xl lg:text-3xl text-white font-medium">結合咖啡的香與音樂的韻，啟動生活靈感。</p>
       </div>
     </section>
 
     <section id="products" class="py-16 fade-up">
       <div class="max-w-[1200px] mx-auto px-6">
         <h2 class="text-3xl mb-6 text-center">🎵 精選咖啡豆</h2>
-        <div class="mb-6 text-center">
-          <label for="category" class="mr-2 font-bold">分類：</label>
-          <select id="category" class="p-2 border rounded bg-[#fffdf8] shadow-md hover:border-[#b58863] focus:outline-none">
-            <option value="all">全部</option>
-            <option value="light">淺焙</option>
-            <option value="medium">中焙</option>
-            <option value="dark">深焙</option>
-          </select>
+        <div class="mb-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div class="flex items-center w-full sm:w-auto">
+            <label for="category" class="mr-2 font-bold">分類：</label>
+            <select id="category" class="p-2 border rounded bg-[#fffdf8] shadow-md hover:border-[#b58863] focus:outline-none w-full sm:w-auto">
+              <option value="all">全部</option>
+              <option value="light">淺焙</option>
+              <option value="medium">中焙</option>
+              <option value="dark">深焙</option>
+            </select>
+          </div>
+          <div class="flex items-center w-full sm:w-auto">
+            <label for="product-search" class="sr-only">搜尋商品</label>
+            <input type="text" id="product-search" placeholder="搜尋商品名稱或風味..." class="p-2 border rounded w-full bg-[#fffdf8] shadow-md hover:border-[#b58863] focus:outline-none" />
+          </div>
         </div>
         <div id="product-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
@@ -159,7 +270,8 @@
     <section id="cart" class="py-16 bg-[#fff9f0] fade-up">
       <div class="max-w-[900px] mx-auto px-6">
         <h2 class="text-2xl mb-4">🛒 購物車</h2>
-        <div class="overflow-x-auto"> <table class="w-full border text-left cart-table">
+        <div class="overflow-x-auto">
+          <table class="w-full border text-left cart-table">
             <thead>
               <tr class="bg-[#f5efe6]">
                 <th class="p-2 border whitespace-nowrap">商品</th>
@@ -173,7 +285,7 @@
         </div>
         <p class="text-right mt-4 font-bold">總金額：<span id="total-amount">NT$0</span></p>
         <div class="text-right mt-4">
-          <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-6 py-2 rounded">結帳</button>
+          <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-6 py-2 rounded btn-press">結帳</button>
         </div>
       </div>
     </section>
@@ -192,7 +304,7 @@
             <option value="⭐️⭐️">⭐️⭐️</option>
             <option value="⭐️">⭐️</option>
           </select> 
-          <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-2 rounded">送出評論</button>
+          <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-2 rounded btn-press">送出評論</button>
         </form>
         <div id="review-list" class="mt-6 space-y-4"></div>
       </div>
@@ -211,7 +323,11 @@
       © 2025 Melody Beans. 品味旋律，啜飲人生。
     </footer>
 
-    <div id="floatingCart" class="floating-cart" onclick="toggleCartPanel(); renderCartPanel()">🛒</div>
+    <div id="floatingCart" class="floating-cart" onclick="toggleCartPanel(); renderCartPanel()">
+      🛒
+      <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+    </div>
+
     <div id="cartPanel" class="fixed top-0 right-0 w-full md:w-[300px] h-full bg-[#fff9f0] shadow-lg p-4 transform translate-x-full transition-transform duration-300 z-[9999] overflow-y-auto">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-bold">🛍️ 購物清單</h2>
@@ -221,7 +337,7 @@
         </div>
       <div class="mt-4 text-right font-bold">總金額：<span id="panelTotal">NT$0</span></div>
       <div class="mt-2 text-right">
-        <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-4 py-2 rounded">結帳</button>
+        <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-4 py-2 rounded btn-press">結帳</button>
       </div>
     </div> 
 
@@ -256,30 +372,47 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">付款方式</label>
             <div class="flex flex-col gap-2">
               <label class="inline-flex items-center">
-                <input type="radio" name="paymentMethod" value="cashOnDelivery" class="form-radio text-[#b58863]" checked>
+                <input type="radio" name="paymentMethod" value="cashOnDelivery" class="form-radio text-[#b58863]" checked onchange="toggleCreditCardFields(this)">
                 <span class="ml-2">貨到付款</span>
               </label>
               <label class="inline-flex items-center">
-                <input type="radio" name="paymentMethod" value="creditCard" class="form-radio text-[#b58863]">
+                <input type="radio" name="paymentMethod" value="creditCard" class="form-radio text-[#b58863]" onchange="toggleCreditCardFields(this)">
                 <span class="ml-2">信用卡 (此為模擬，無實際扣款)</span>
               </label>
             </div>
+            <div id="creditCardFields" class="mt-4 grid grid-cols-1 gap-3 hidden">
+                <div>
+                    <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">信用卡號</label>
+                    <input type="text" id="cardNumber" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="XXXX XXXX XXXX XXXX" pattern="\d{16}" title="請輸入16位數字信用卡號" disabled>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-1">有效期 (MM/YY)</label>
+                        <input type="text" id="expiryDate" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/\d{2}" title="請輸入MM/YY格式，例如01/25" disabled>
+                    </div>
+                    <div>
+                        <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                        <input type="text" id="cvv" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="XXX" pattern="\d{3,4}" title="請輸入3或4位數字" disabled>
+                    </div>
+                </div>
+            </div>
           </div>
 
-          <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-3 rounded-md hover:bg-[#5a4444] transition-colors duration-300 text-lg font-semibold">確認下單</button>
+          <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-3 rounded-md hover:bg-[#5a4444] transition-colors duration-300 text-lg font-semibold btn-press">確認下單</button>
         </form>
 
         <div id="thankYouMessage" class="text-center py-8 hidden">
           <h3 class="text-3xl font-bold text-[#b58863] mb-4">🎉 訂單已成立！感謝您的購買！ 🎉</h3>
           <p class="text-lg mb-2">您的訂單號碼為：<strong id="finalOrderId" class="text-[#3f2e2e]"></strong></p>
           <p class="text-md text-gray-700">我們將盡快為您處理訂單，請留意電話或信件通知。</p>
-          <button onclick="closeCheckoutModal(true)" class="mt-8 bg-[#b58863] text-white px-8 py-3 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 text-lg">繼續購物</button>
+          <button onclick="closeCheckoutModal(true)" class="mt-8 bg-[#b58863] text-white px-8 py-3 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 text-lg btn-press">繼續購物</button>
         </div>
 
       </div>
     </div>
   </body>
 </html>
+
 <script>
   // Global cart object
   let cart = {};
@@ -303,6 +436,7 @@
     fadeSections.forEach(section => observer.observe(section));
 
     loadCart(); // Load cart from localStorage on page load
+    updateCartBadge(); // 初始化購物車徽章數量
     renderProducts(); // Initial render of products
     renderCart(); // Initial render of main cart
     renderCartPanel(); // Initial render of side cart panel
@@ -318,7 +452,13 @@
     // Category filter event listener
     const categoryFilter = document.getElementById('category');
     if (categoryFilter) {
-      categoryFilter.addEventListener('change', e => renderProducts(e.target.value));
+      categoryFilter.addEventListener('change', () => renderProducts()); // 篩選時重新渲染商品
+    }
+
+    // Product search event listener
+    const productSearchInput = document.getElementById('product-search');
+    if (productSearchInput) {
+        productSearchInput.addEventListener('input', () => renderProducts()); // 搜尋時重新渲染商品
     }
 
     // Checkout Form Submission Listener
@@ -337,6 +477,18 @@
                 alert('請填寫所有必填資訊！');
                 return;
             }
+
+            // 如果選擇信用卡，也模擬檢查這些欄位是否填寫（儘管沒有實際驗證）
+            if (paymentMethod === 'creditCard') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                if (!cardNumber || !expiryDate || !cvv) {
+                    alert('請填寫完整的信用卡資訊！');
+                    return;
+                }
+            }
+
 
             const orderId = generateOrderId();
             
@@ -382,10 +534,21 @@
             lastScrollY = window.scrollY;
         }
     });
-
   });
 
-  // 新增的結帳彈窗相關函數
+  // 購物車徽章更新函數
+  function updateCartBadge() {
+      const cartBadge = document.getElementById('cart-badge');
+      if (!cartBadge) return;
+      let totalItems = 0;
+      for (let item in cart) {
+          totalItems += cart[item].qty;
+      }
+      cartBadge.textContent = totalItems;
+      cartBadge.style.display = totalItems > 0 ? 'flex' : 'none'; // 有商品才顯示徽章
+  }
+
+  // 結帳彈窗相關函數
   function openCheckoutModal() {
     const modal = document.getElementById('checkoutModal');
     const modalContent = document.getElementById('checkoutModalContent');
@@ -420,6 +583,12 @@
     document.getElementById('checkoutForm').classList.remove('hidden');
     document.getElementById('orderSummary').classList.remove('hidden');
     document.getElementById('thankYouMessage').classList.add('hidden');
+    
+    // 預設將信用卡欄位隱藏並禁用
+    document.getElementById('creditCardFields').classList.add('hidden');
+    document.getElementById('cardNumber').disabled = true;
+    document.getElementById('expiryDate').disabled = true;
+    document.getElementById('cvv').disabled = true;
 
     // 顯示模態框並觸發動畫
     modal.classList.remove('hidden');
@@ -443,6 +612,7 @@
         saveCart();
         renderCart();
         renderCartPanel();
+        updateCartBadge(); // 清空購物車後更新徽章
       }
     }, 300); // 等待動畫結束後隱藏
   }
@@ -452,9 +622,44 @@
     openCheckoutModal();
   };
 
+  // 信用卡欄位顯示/隱藏控制
+  window.toggleCreditCardFields = function(radio) {
+      const creditCardFields = document.getElementById('creditCardFields');
+      const cardNumber = document.getElementById('cardNumber');
+      const expiryDate = document.getElementById('expiryDate');
+      const cvv = document.getElementById('cvv');
+
+      if (radio.value === 'creditCard') {
+          creditCardFields.classList.remove('hidden');
+          cardNumber.disabled = false;
+          expiryDate.disabled = false;
+          cvv.disabled = false;
+          // 可以選擇在這裡將這些欄位設為 required，如果要求用戶必須填寫
+          // cardNumber.required = true;
+          // expiryDate.required = true;
+          // cvv.required = true;
+      } else {
+          creditCardFields.classList.add('hidden');
+          cardNumber.disabled = true;
+          expiryDate.disabled = true;
+          cvv.disabled = true;
+          // cardNumber.required = false;
+          // expiryDate.required = false;
+          // cvv.required = false;
+      }
+  };
+
+
   function toggleCartPanel() {
     const panel = document.getElementById('cartPanel');
     panel.classList.toggle('translate-x-full');
+
+    // 浮動購物車圖標點擊動畫
+    const floatingCart = document.getElementById('floatingCart');
+    floatingCart.classList.add('animate-pop'); // 添加一個臨時動畫類別
+    setTimeout(() => {
+        floatingCart.classList.remove('animate-pop'); // 移除類別以允許再次觸發
+    }, 300); // 動畫持續時間
   }
 
   function renderCartPanel() {
@@ -476,11 +681,9 @@
         <div class="font-bold">${item}</div>
         <div class="text-sm text-gray-500">單價：${formatPrice(price)}</div>
         <div class="flex justify-between items-center mt-1">
-          <div class="flex items-center gap-2">
-            <button onclick="updateQty('${item}', -1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded">-</button>
-            ${qty}
-            <button onclick="updateQty('${item}', 1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded">+</button>
-          </div>
+          <button onclick="updateQty('${item}', -1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded">➖</button>
+          ${qty}
+          <button onclick="updateQty('${item}', 1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded">➕</button>
           <div class="text-right font-bold">${formatPrice(sub)}</div>
         </div>
       `;
@@ -535,7 +738,7 @@
       weight: '227g',
       expiry: '2025/11/01',
       price: 540,
-      category: 'medium', // 已修正為 'medium' 以匹配篩選選項
+      category: 'medium',
       image: './image/image_4.png'
     },
     {
@@ -547,7 +750,7 @@
       weight: '227g',
       expiry: '2025/11/01',
       price: 540,
-      category: 'medium', // 已修正為 'medium'
+      category: 'medium',
       image: './image/image_5.png'
     },
     {
@@ -588,11 +791,28 @@
     }
   ];
 
-  function renderProducts(filter = 'all') {
+  function renderProducts() {
     const productContainer = document.getElementById('product-cards');
+    const categoryFilter = document.getElementById('category').value;
+    const searchTerm = document.getElementById('product-search').value.toLowerCase();
+    
     if (!productContainer) return;
     productContainer.innerHTML = '';
-    products.filter(p => filter === 'all' || p.category === filter).forEach(p => {
+
+    const filteredProducts = products.filter(p => {
+        const matchesCategory = categoryFilter === 'all' || p.category === categoryFilter;
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                              p.flavor.toLowerCase().includes(searchTerm) ||
+                              p.country.toLowerCase().includes(searchTerm);
+        return matchesCategory && matchesSearch;
+    });
+
+    if (filteredProducts.length === 0) {
+        productContainer.innerHTML = '<p class="text-center col-span-full text-lg text-gray-600">抱歉，沒有找到符合條件的商品。</p>';
+        return;
+    }
+
+    filteredProducts.forEach(p => {
       const card = document.createElement('div');
       card.className = 'ornate-box hover:scale-105 transition-transform duration-300';
       card.innerHTML = `
@@ -603,7 +823,7 @@
         <p class="mb-1">焙度：${p.roast}｜重量：${p.weight}</p>
         <p class="mb-1">期限：${p.expiry}</p>
         <p class="mb-2 font-bold">NT$${p.price}</p>
-        <button class="bg-[#3f2e2e] text-white px-4 py-2 rounded" onclick="addToCart('${p.name}', ${p.price})">加入購物車</button>
+        <button class="bg-[#3f2e2e] text-white px-4 py-2 rounded btn-press" onclick="addToCart('${p.name}', ${p.price})">加入購物車</button>
       `;
       productContainer.appendChild(card);
     });
@@ -615,7 +835,13 @@
     saveCart(); 
     renderCart();
     renderCartPanel(); 
-    alert(`"${name}" 已加入購物車！`); 
+    updateCartBadge();
+    
+    const floatingCart = document.getElementById('floatingCart');
+    floatingCart.classList.add('animate-pop');
+    setTimeout(() => {
+        floatingCart.classList.remove('animate-pop');
+    }, 300); 
   }
 
   function formatPrice(n) {
@@ -631,6 +857,7 @@
     saveCart(); 
     renderCart();
     renderCartPanel(); 
+    updateCartBadge();
   }
 
   window.removeItem = function(name) {
@@ -638,6 +865,7 @@
     saveCart(); 
     renderCart();
     renderCartPanel(); 
+    updateCartBadge();
   }
 
   function renderCart() {
@@ -703,18 +931,16 @@
     const content = document.getElementById('review-content').value;
     const rating = document.getElementById('review-rating').value;
     
-    // 將新評論添加到 reviews 陣列中
     reviews.push({ name, content, rating, timestamp: new Date().toISOString() });
-    saveReviews(); // 儲存評論
-    renderReviews(); // 重新渲染評論列表
-    e.target.reset(); // 清空表單
+    saveReviews();
+    renderReviews();
+    e.target.reset();
   }
-
+ 
   function renderReviews() {
     const reviewList = document.getElementById('review-list');
     if (!reviewList) return;
     reviewList.innerHTML = ''; 
-    // 顯示評論，新評論在最上方
     reviews.slice().reverse().forEach(review => {
       const div = document.createElement('div');
       div.className = 'p-4 border rounded shadow bg-white'; 
@@ -756,5 +982,4 @@
       });
     }
   });
-
 </script>
