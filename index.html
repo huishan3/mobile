@@ -342,14 +342,14 @@
     </div> 
 
     <div id="checkoutModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[10000] hidden">
-      <div class="bg-[#fff9f0] p-8 rounded-lg shadow-2xl w-full max-w-lg relative ornate-box transform scale-95 opacity-0 transition-all duration-300 mx-4 sm:mx-auto" id="checkoutModalContent">
+      <div class="bg-[#fff9f0] p-8 rounded-lg shadow-2xl w-full max-w-lg relative ornate-box transform scale-95 opacity-0 transition-all duration-300 mx-4 sm:mx-auto max-h-[90vh] overflow-y-auto" id="checkoutModalContent">
         <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">✕</button>
         
         <h2 class="text-2xl font-bold mb-6 text-center text-[#b58863]">訂單確認與結帳</h2>
         
         <div id="orderSummary" class="mb-6 border-b border-gray-300 pb-4">
           <h3 class="text-xl font-semibold mb-3">您的訂單</h3>
-          <div id="modalCartItems" class="space-y-2 text-sm max-h-40 overflow-y-auto pr-2">
+          <div id="modalCartItems" class="space-y-1 text-sm max-h-40 overflow-y-auto pr-2"> 
             </div>
           <p class="text-right font-bold text-lg mt-4">總金額：<span id="modalTotalAmount">NT$0</span></p>
         </div>
