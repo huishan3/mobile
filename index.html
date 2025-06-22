@@ -203,8 +203,6 @@
     </style>
   </head>
   <body class="text-[#3f2e2e]">
-    <!-- Notification Container will be dynamically created here -->
-
     <nav class="bg-[#f5efe6] shadow-md sticky top-0 z-50 fade-up">
       <div class="max-w-[1200px] mx-auto flex justify-between items-center py-4 px-6">
         <div class="flex items-center">
@@ -223,7 +221,7 @@
           <li><a href="#about" class="hover:underline navbar-link-hover" onclick="closeMenu()">關於我們</a></li>
           <li><a href="#" class="hover:underline navbar-link-hover" onclick="openMemberModal(); return false;" id="memberLink">會員登入/註冊</a></li>
         </ul>
-        <button class="ml-4 text-sm underline hidden md:block" id="lang-btn">EN</button> </div>
+        <button class="ml-4 text-sm underline hidden md:block">EN</button> </div>
       <div id="mobile-menu" class="hidden md:hidden bg-[#f5efe6] pb-4 px-6">
         <ul class="flex flex-col gap-2 text-lg">
           <li><a href="#home" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">首頁</a></li>
@@ -234,7 +232,7 @@
           <li><a href="#about" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">關於我們</a></li>
           <li><a href="#" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="openMemberModal(); closeMenu(); return false;">會員登入/註冊</a></li>
         </ul>
-        <button class="mt-4 text-sm underline block mx-auto" id="mobile-lang-btn">EN</button>
+        <button class="mt-4 text-sm underline block mx-auto">EN</button>
       </div>
     </nav>
 
@@ -361,11 +359,11 @@
             <div>
               <h4 class="text-xl font-semibold mb-2">咖啡豆保存方式：</h4>
               <ul class="list-disc list-inside space-y-2">
-                <li>**密封保存**：使用不透光、密封性好的容器。</li>
-                <li>**避光避濕**：避免陽光直射和潮濕環境。</li>
-                <li>**避免異味**：遠離有強烈氣味的物品。</li>
-                <li>**適溫存放**：建議存放在陰涼乾燥處，無需冷藏或冷凍（除非長時間保存）。</li>
-                <li>**最佳賞味期**：咖啡豆開封後，建議在一個月內飲用完畢以保持最佳風味。</li>
+                <li>密封保存：使用不透光、密封性好的容器。</li>
+                <li>避光避濕：避免陽光直射和潮濕環境。</li>
+                <li>避免異味：遠離有強烈氣味的物品。</li>
+                <li>適溫存放：建議存放在陰涼乾燥處，無需冷藏或冷凍（除非長時間保存）。</li>
+                <li>最佳賞味期：咖啡豆開封後，建議在一個月內飲用完畢以保持最佳風味。</li>
               </ul>
             </div>
           </div>
@@ -384,7 +382,6 @@
                 <th class="p-2 border whitespace-nowrap">數量</th>
                 <th class="p-2 border whitespace-nowrap">單價</th>
                 <th class="p-2 border whitespace-nowrap">小計</th>
-                <th class="p-2 border whitespace-nowrap">操作</th>
               </tr>
             </thead>
             <tbody id="cart-body"></tbody>
@@ -393,7 +390,7 @@
         <p class="text-right mt-4 font-bold">總金額：<span id="total-amount">NT$0</span></p>
         <p class="text-sm text-red-600 text-right mt-2 font-bold">※ 本網站所有商品不提供退換貨服務。</p>
         <div class="text-right mt-4">
-          <button onclick="openCheckoutModal()" class="bg-[#3f2e2e] text-white px-6 py-2 rounded btn-press">結帳</button>
+          <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-6 py-2 rounded btn-press">結帳</button>
         </div>
       </div>
     </section>
@@ -401,19 +398,16 @@
     <section id="review" class="bg-[#fdfaf5] py-16 fade-up">
       <div class="max-w-[600px] mx-auto px-6">
         <h2 class="text-2xl mb-6 text-center">留下您的評論</h2>
-        <form id="reviewForm" class="grid gap-4">
-          <select id="review-product-select" class="p-3 border rounded">
-              <option value="">選擇要評論的商品 (可選)</option>
-              <!-- 商品列表將在此處動態載入 -->
-          </select>
+        <form class="grid gap-4" onsubmit="submitReview(event)">
+          <input id="reviewer" type="text" placeholder="您的名稱" class="p-3 border rounded" required />
           <textarea id="review-content" rows="4" placeholder="您的評論內容..." class="p-3 border rounded" required></textarea>
           <select id="review-rating" class="p-3 border rounded" required>
             <option value="" disabled selected>給我們幾顆星？</option>
-            <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
-            <option value="4">⭐️⭐️⭐️⭐️</option>
-            <option value="3">⭐️⭐️⭐️</option>
-            <option value="2">⭐️⭐️</option>
-            <option value="1">⭐️</option>
+            <option value="⭐️⭐️⭐️⭐️⭐️">⭐️⭐️⭐️⭐️⭐️</option>
+            <option value="⭐️⭐️⭐️⭐️">⭐️⭐️⭐️⭐️</option>
+            <option value="⭐️⭐️⭐️">⭐️⭐️⭐️</option>
+            <option value="⭐️⭐️">⭐️⭐️</option>
+            <option value="⭐️">⭐️</option>
           </select> 
           <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-2 rounded btn-press">送出評論</button>
         </form>
@@ -448,7 +442,7 @@
         </div>
       <div class="mt-4 text-right font-bold">總金額：<span id="panelTotal">NT$0</span></div>
       <div class="mt-2 text-right">
-        <button onclick="openCheckoutModal()" class="bg-[#3f2e2e] text-white px-4 py-2 rounded btn-press">結帳</button>
+        <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-4 py-2 rounded btn-press">結帳</button>
       </div>
     </div> 
 
@@ -461,8 +455,8 @@
         <div id="loginSection">
           <form id="loginForm" class="grid gap-4">
             <div>
-              <label for="loginUsername" class="block text-sm font-medium text-gray-700 mb-1">用戶名</label>
-              <input type="text" id="loginUsername" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的用戶名" required>
+              <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
+              <input type="email" id="loginEmail" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的電子郵件" required>
             </div>
             <div>
               <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">密碼</label>
@@ -476,20 +470,12 @@
         <div id="registerSection" class="hidden">
           <form id="registerForm" class="grid gap-4">
             <div>
-              <label for="registerUsername" class="block text-sm font-medium text-gray-700 mb-1">用戶名</label>
-              <input type="text" id="registerUsername" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請設定用戶名 (至少3位)" required minlength="3">
-            </div>
-            <div>
               <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
-              <input type="email" id="registerEmail" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的電子郵件" required>
+              <input type="email" id="registerEmail" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的 Gmail 帳號" required pattern=".+@gmail\.com$" title="請輸入有效的 Gmail 帳號 (例如: example@gmail.com)">
             </div>
             <div>
               <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">密碼</label>
               <input type="password" id="registerPassword" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="設定密碼 (至少6位)" required minlength="6">
-            </div>
-             <div>
-              <label for="registerFullName" class="block text-sm font-medium text-gray-700 mb-1">全名 (可選)</label>
-              <input type="text" id="registerFullName" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的全名">
             </div>
             <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-3 rounded-md hover:bg-[#5a4444] transition-colors duration-300 text-lg font-semibold btn-press">註冊</button>
           </form>
@@ -498,10 +484,7 @@
 
         <div id="memberInfo" class="hidden text-center py-4">
           <h3 class="text-xl font-bold mb-4">會員資訊</h3>
-          <p class="mb-2">歡迎，<strong id="loggedInUsername"></strong>！</p>
-          <p class="mb-2">電子郵件：<span id="loggedInUserEmail"></span></p>
-          <p class="mb-2">全名：<span id="loggedInUserFullName"></span></p>
-          <p class="mb-2">管理員: <span id="loggedInUserIsAdmin"></span></p>
+          <p class="mb-2">歡迎，<strong id="loggedInUserEmail"></strong>！</p>
           <button onclick="viewPurchaseHistory()" class="bg-[#b58863] text-white px-4 py-2 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 btn-press">查看購買紀錄</button>
           <button onclick="logout()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 ml-2 btn-press">登出</button>
         </div>
@@ -535,81 +518,46 @@
 
         <form id="checkoutForm" class="grid grid-cols-1 gap-4">
           <p class="text-sm text-red-600 font-bold">※ 本網站所有商品不提供退換貨服務。請您確認後再下單。</p>
-          
-          <!-- 配送資訊欄位 -->
-          <h3 class="text-xl font-bold mb-2 mt-2">配送資訊</h3>
           <div>
-              <label for="deliveryMethod" class="block text-sm font-medium text-gray-700 mb-1">配送方式:</label>
-              <select id="deliveryMethod" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" required>
-                  <option value="homeDelivery">宅配到府</option>
-                  <option value="pickup">門市自取</option>
-              </select>
+            <label for="customerName" class="block text-sm font-medium text-gray-700 mb-1">收件人姓名</label>
+            <input type="text" id="customerName" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的姓名" required>
           </div>
           <div>
-            <label for="recipientName" class="block text-sm font-medium text-gray-700 mb-1">收件人姓名:</label>
-            <input type="text" id="recipientName" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入收件人姓名" required pattern="^[\u4e00-\u9fa5a-zA-Z\s]+$" title="請輸入有效的中英文姓名，避免特殊字元。">
+            <label for="customerPhone" class="block text-sm font-medium text-gray-700 mb-1">聯絡電話</label>
+            <input type="tel" id="customerPhone" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入聯絡電話" required>
           </div>
           <div>
-            <label for="recipientPhone" class="block text-sm font-medium text-gray-700 mb-1">配送人確認手機號碼 / 物流聯絡與到貨通知:</label>
-            <input type="tel" id="recipientPhone" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入聯絡電話" required pattern="09\d{8}" title="請輸入有效的台灣手機號碼 (09開頭，共10碼)。">
-          </div>
-          <div>
-            <label for="shippingAddressPostalCode" class="block text-sm font-medium text-gray-700 mb-1">配送地址 (郵遞區號):</label>
-            <input type="text" id="shippingAddressPostalCode" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入郵遞區號" required pattern="\d{3,5}" title="請輸入3-5位數字的郵遞區號。">
-          </div>
-          <div>
-            <label for="shippingAddressDetail" class="block text-sm font-medium text-gray-700 mb-1">配送地址 (詳細地址):</label>
-            <textarea id="shippingAddressDetail" rows="3" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入詳細地址" required minlength="5" title="請輸入至少5個字的詳細地址。"></textarea>
-          </div>
-          <div>
-            <label for="deliveryNotes" class="block text-sm font-medium text-gray-700 mb-1">寄送地點備註 (如：樓層、門牌、特殊需求):</label>
-            <textarea id="deliveryNotes" rows="2" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="例如：社區大門警衛室代收 (限200字內)" maxlength="200"></textarea>
+            <label for="customerAddress" class="block text-sm font-medium text-gray-700 mb-1">收件地址</label>
+            <textarea id="customerAddress" rows="3" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入收件地址" required></textarea>
           </div>
 
           <div>
-            <label for="deliveryTimePreference" class="block text-sm font-medium text-gray-700 mb-1">配送時間偏好:</label>
-            <select id="deliveryTimePreference" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]">
-                <option value="">不限</option>
-                <option value="morning">早上 (9-12點)</option>
-                <option value="afternoon">下午 (13-17點)</option>
-                <option value="evening">晚上 (18-21點)</option>
-            </select>
-          </div>
-
-          <h3 class="text-xl font-bold mb-2 mt-6">付款方式</h3>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">選擇付款方式</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">付款方式</label>
             <div class="flex flex-col gap-2">
               <label class="inline-flex items-center">
-                <input type="radio" name="paymentMethod" value="creditCard" class="form-radio text-[#b58863]" checked onchange="toggleCreditCardFields(this)">
-                <span class="ml-2">信用卡 (此為模擬，無實際扣款)</span>
+                <input type="radio" name="paymentMethod" value="cashOnDelivery" class="form-radio text-[#b58863]" checked onchange="toggleCreditCardFields(this)">
+                <span class="ml-2">貨到付款</span>
               </label>
               <label class="inline-flex items-center">
-                <input type="radio" name="paymentMethod" value="bankTransfer" class="form-radio text-[#b58863]" onchange="toggleCreditCardFields(this)">
-                <span class="ml-2">銀行轉帳 (請於下單後24小時內完成轉帳)</span>
+                <input type="radio" name="paymentMethod" value="creditCard" class="form-radio text-[#b58863]" onchange="toggleCreditCardFields(this)">
+                <span class="ml-2">信用卡 (此為模擬，無實際扣款)</span>
               </label>
             </div>
-            <div id="creditCardFields" class="mt-4 grid grid-cols-1 gap-3">
+            <div id="creditCardFields" class="mt-4 grid grid-cols-1 gap-3 hidden">
                 <div>
                     <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">信用卡號</label>
-                    <input type="text" id="cardNumber" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="XXXX XXXX XXXX XXXX" pattern="[0-9]{16}" title="請輸入16位數字信用卡號" required>
+                    <input type="text" id="cardNumber" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="XXXX XXXX XXXX XXXX" pattern="\d{16}" title="請輸入16位數字信用卡號" disabled>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-1">有效期 (MM/YY)</label>
-                        <input type="text" id="expiryDate" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="請輸入MM/YY格式，例如01/25" required>
+                        <input type="text" id="expiryDate" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/\d{2}" title="請輸入MM/YY格式，例如01/25" disabled>
                     </div>
                     <div>
                         <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
-                        <input type="text" id="cvv" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="XXX" pattern="[0-9]{3,4}" title="請輸入3或4位數字" required>
+                        <input type="text" id="cvv" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="XXX" pattern="\d{3,4}" title="請輸入3或4位數字" disabled>
                     </div>
                 </div>
-            </div>
-             <div id="bankTransferInfo" class="mt-4 hidden text-sm text-gray-700 p-3 border rounded-md bg-gray-50">
-                <p class="font-bold mb-2">銀行轉帳資訊：</p>
-                <p>銀行名稱：XX 銀行</p>
-                <p>帳號：123-456-7890 (Melody Beans)</p>
-                <p class="text-red-600 mt-2">請注意：轉帳後請截圖並聯絡客服提供訂單號碼及轉帳證明，以便我們確認。</p>
             </div>
           </div>
 
@@ -622,7 +570,7 @@
         </form>
 
         <div id="thankYouMessage" class="text-center py-8 hidden">
-          <h3 class="text-3xl font-bold text-[#b58863] mb-4">🎉 訂單已成立！感謝您的購買！ 🎉</h3>
+          <h3 class="text-3xl font-bold text-[#b58863] mb-4">� 訂單已成立！感謝您的購買！ 🎉</h3>
           <p class="text-lg mb-2">您的訂單號碼為：<strong id="finalOrderId" class="text-[#3f2e2e]"></strong></p>
           <p class="text-md text-gray-700">我們將盡快為您處理訂單，請留意電話或信件通知。</p>
           <button onclick="closeCheckoutModal(true)" class="mt-8 bg-[#b58863] text-white px-8 py-3 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 text-lg btn-press">繼續購物</button>
@@ -634,231 +582,21 @@
 </html>
 
 <script>
-  // Global variables
-  let cart = {}; // Global cart object
-  let products = []; // Product list fetched from API
-  let reviews = []; // Reviews fetched from API
-  let loggedInUser = null; // Stores current logged-in user info
+  // Global cart object
+  let cart = {};
+  // Review functions (add localStorage for persistence)
+  let reviews = [];
 
   // Variables for floating cart visibility
-  let lastScrollY = 0; // Initialize lastScrollY
+  let lastScrollY = 0;
   const floatingCart = document.getElementById('floatingCart');
 
-  const SHIPPING_FEE = 60; // Shipping fee
+  // 會員相關變數
+  let loggedInUser = null; // 儲存當前登入的使用者資訊
+  let users = {}; // 模擬使用者資料庫 { email: { password, purchaseHistory: [], browsingHistory: [], loginCount } }
+  const SHIPPING_FEE = 60; // 運費
 
-  // API base URL (Nginx proxies to backend)
-  // Changed to http://localhost:8000 to directly access backend in playground
-  const API_BASE_URL = 'http://localhost:8000'; 
-
-
-  // --- Utility Functions ---
-
-  /**
-   * Displays a dynamic notification message.
-   * @param {string} type - Type of notification ('success', 'error', 'info', 'warning').
-   * @param {string} message - The message to display.
-   */
-  function showNotification(type, message) {
-      const container = document.getElementById('notification-container');
-      if (!container) {
-          console.error('Notification container not found!');
-          return;
-      }
-
-      const notification = document.createElement('div');
-      notification.className = `p-3 rounded-md shadow-lg flex items-center transition-all duration-300 ease-out transform translate-x-full opacity-0 pointer-events-auto`; // Added pointer-events-auto
-      
-      let icon = '';
-      let bgColor = '';
-      let textColor = '';
-      let borderColor = '';
-
-      switch (type) {
-          case 'success':
-              icon = '✅';
-              bgColor = 'bg-green-100';
-              textColor = 'text-green-800';
-              borderColor = 'border-green-400';
-              break;
-          case 'error':
-              icon = '❌';
-              bgColor = 'bg-red-100';
-              textColor = 'text-red-800';
-              borderColor = 'border-red-400';
-              break;
-          case 'info':
-              icon = 'ℹ️';
-              bgColor = 'bg-blue-100';
-              textColor = 'text-blue-800';
-              borderColor = 'border-blue-400';
-              break;
-          case 'warning':
-              icon = '⚠️';
-              bgColor = 'bg-yellow-100';
-              textColor = 'text-yellow-800';
-              borderColor = 'border-yellow-400';
-              break;
-          default:
-              icon = '';
-              bgColor = 'bg-gray-100';
-              textColor = 'text-gray-800';
-              borderColor = 'border-gray-400';
-      }
-
-      notification.innerHTML = `
-          <span class="icon mr-2 text-xl">${icon}</span>
-          <span class="flex-grow">${message}</span>
-          <button class="close-btn ml-auto text-xl font-bold cursor-pointer" onclick="this.parentNode.remove()">✕</button>
-      `;
-      notification.classList.add(bgColor, textColor);
-      notification.style.border = `1px solid ${borderColor.replace('border-', '#').replace('-400', '')}`; // Dynamic border color
-
-      container.appendChild(notification);
-
-      // Trigger animation: slide in from right
-      setTimeout(() => {
-          notification.classList.remove('opacity-0', 'translate-x-full');
-          notification.classList.add('opacity-100', 'translate-x-0');
-      }, 10);
-
-      // Auto-remove after 5 seconds, slide out to right
-      setTimeout(() => {
-          notification.classList.remove('opacity-100', 'translate-x-0');
-          notification.classList.add('opacity-0', 'translate-x-full');
-          notification.addEventListener('transitionend', () => notification.remove(), { once: true });
-      }, 5000);
-  }
-
-  /**
-   * Formats a number as a price string with NT$ and Taiwanese locale.
-   * @param {number} price - The number to format.
-   * @returns {string} The formatted price string.
-   */
-  function formatPrice(price) {
-    return `NT$${parseFloat(price).toFixed(0).toLocaleString('zh-Hant-TW')}`;
-  }
-
-  /**
-   * Opens a modal by removing 'hidden' class and triggering transition.
-   * @param {string} modalId - The ID of the modal element.
-   */
-  function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const modalContent = document.getElementById(modalId + 'Content');
-    if (modal && modalContent) {
-      modal.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        modalContent.classList.remove('scale-95', 'opacity-0');
-        modalContent.classList.add('scale-100', 'opacity-100');
-      });
-    }
-  }
-
-  /**
-   * Closes a modal by adding 'hidden' class after transition.
-   * @param {string} modalId - The ID of the modal element.
-   * @param {boolean} [clearCartAfter=false] - Whether to clear the cart after closing (for checkout success).
-   */
-  function closeModal(modalId, clearCartAfter = false) {
-    const modal = document.getElementById(modalId);
-    const modalContent = document.getElementById(modalId + 'Content');
-    if (modal && modalContent) {
-      modalContent.classList.remove('scale-100', 'opacity-100');
-      modalContent.classList.add('scale-95', 'opacity-0');
-
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        if (clearCartAfter) {
-          cart = {};
-          saveCart();
-          renderCart();
-          renderCartPanel();
-          updateCartBadge();
-        }
-      }, 300);
-    }
-  }
-
-  /**
-   * Makes an API request with optional authentication.
-   * @param {string} method - HTTP method (GET, POST, PUT, DELETE).
-   * @param {string} endpoint - API endpoint (e.g., '/products').
-   * @param {object} [data=null] - Request body data.
-   * @param {boolean} [needsAuth=false] - True if JWT token is required.
-   * @returns {Promise<object|null>} Response data or null for 204.
-   * @throws {Error} If the request fails.
-   */
-  async function makeApiRequest(method, endpoint, data = null, needsAuth = false) {
-      const headers = {
-          'Content-Type': 'application/json',
-      };
-
-      if (needsAuth) {
-          const token = localStorage.getItem('accessToken');
-          if (!token) {
-              openMemberModal(); // Open login modal if auth needed but no token
-              throw new Error('未經授權：請先登入。'); // Specific error message
-          }
-          headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      // Ensure API_BASE_URL does not end with a slash and endpoint starts with one, for correct URL construction
-      const cleanedBaseUrl = API_BASE_URL.replace(/\/+$/, '');
-      const fullEndpoint = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
-      const url = `${cleanedBaseUrl}${fullEndpoint}`;
-
-      console.log(`正在請求 URL: ${url}, 方法: ${method}`); // Debugging log
-
-      const options = {
-          method: method,
-          headers: headers,
-          body: data ? JSON.stringify(data) : null
-      };
-
-      try {
-          const response = await fetch(url, options);
-          
-          if (response.status === 401) { // Unauthorized
-              showNotification('error', '您的登入已過期或無效，請重新登入。');
-              logout(); // Clear invalid login state
-              openMemberModal(); // Show login modal
-              throw new Error('Unauthorized');
-          }
-          if (response.status === 403) { // Forbidden
-              showNotification('error', '您沒有權限執行此操作。');
-              throw new Error('Forbidden');
-          }
-          if (!response.ok) {
-              const errorData = await response.json();
-              const errorMessage = errorData.detail || `API 請求失敗: ${response.statusText}`;
-              showNotification('error', errorMessage); // Show specific error from backend
-              throw new Error(errorMessage);
-          }
-          // For DELETE (204 No Content) or other successful requests with no body
-          if (response.status === 204 || method === 'DELETE') {
-              return null;
-          }
-          return await response.json();
-      } catch (error) {
-          console.error(`API 請求錯誤 ${method} ${endpoint}:`, error);
-          // Only show generic network error if it's not an already handled API error
-          if (!(error.message.includes('未經授權') || error.message.includes('Unauthorized') || error.message.includes('Forbidden') || error.message.includes('API 請求失敗'))) {
-               showNotification('error', '網路請求失敗，請檢查您的連線或後端服務是否已啟動並運行在正確的埠。'); // 更明確的提示
-          }
-          throw error;
-      }
-  }
-
-  // --- Event Listeners and Initial Setup ---
-  document.addEventListener('DOMContentLoaded', async () => {
-    // Dynamically add notification container at the very beginning of body
-    const notificationContainer = document.createElement('div');
-    notificationContainer.id = 'notification-container';
-    notificationContainer.className = `fixed top-5 right-5 z-[10000] flex flex-col gap-2 pointer-events-none`;
-    document.body.appendChild(notificationContainer); 
-
-
-    // Observe sections for fade-up animation
+  window.addEventListener('DOMContentLoaded', () => {
     const fadeSections = document.querySelectorAll('.fade-up');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -870,60 +608,112 @@
     }, { threshold: 0.1 });
     fadeSections.forEach(section => observer.observe(section));
 
-    // Check login status and update UI
-    await checkLoginStatus();
-
-    // Load cart from localStorage and update UI
-    loadCart();
-    updateCartBadge();
+    loadCart(); // Load cart from localStorage on page load
+    loadUsers(); // 加載使用者資料
+    checkLoginStatus(); // 檢查登入狀態
+    updateCartBadge(); // 初始化購物車徽章數量
+    renderProducts(); // Initial render of products
     renderCart(); // Initial render of main cart
     renderCartPanel(); // Initial render of side cart panel
 
-    // Fetch and render products and reviews
-    await fetchAndRenderProducts(); // This now also renders product options for review
-    await fetchAndRenderReviews();
-
-    // Language button event listener
-    const langBtn = document.getElementById('lang-btn');
-    const mobileLangBtn = document.getElementById('mobile-lang-btn');
+    // Language button alert
+    const langBtn = document.querySelector('button.underline');
     if (langBtn) {
       langBtn.addEventListener('click', () => {
-        showNotification('info', '目前僅提供繁體中文，English version 敬請期待！');
-      });
-    }
-    if (mobileLangBtn) {
-      mobileLangBtn.addEventListener('click', () => {
-        showNotification('info', '目前僅提供繁體中文，English version 敬請期待！');
+        alert('目前僅提供繁體中文，English version 敬請期待！');
       });
     }
 
-    // Category filter and product search event listeners
+    // Category filter event listener
     const categoryFilter = document.getElementById('category');
     if (categoryFilter) {
-      categoryFilter.addEventListener('change', () => filterAndRenderProducts());
+      categoryFilter.addEventListener('change', () => renderProducts()); // 篩選時重新渲染商品
     }
+
+    // Product search event listener
     const productSearchInput = document.getElementById('product-search');
     if (productSearchInput) {
-        productSearchInput.addEventListener('input', () => filterAndRenderProducts());
+        productSearchInput.addEventListener('input', () => renderProducts()); // 搜尋時重新渲染商品
     }
-    
+
     // Checkout Form Submission Listener
     const checkoutForm = document.getElementById('checkoutForm');
     if (checkoutForm) {
-        checkoutForm.addEventListener('submit', handleCheckoutSubmit);
+        checkoutForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止表單預設提交行為
+
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            // 簡單的表單驗證
+            if (!customerName || !customerPhone || !customerAddress) {
+                alert('請填寫所有必填資訊！');
+                return;
+            }
+
+            // 如果選擇信用卡，也模擬檢查這些欄位是否填寫（儘管沒有實際驗證）
+            if (paymentMethod === 'creditCard') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                if (!cardNumber || !expiryDate || !cvv) {
+                    alert('請填寫完整的信用卡資訊！');
+                    return;
+                }
+            }
+            
+            const subTotal = calculateCartTotal();
+            const totalWithShipping = subTotal + SHIPPING_FEE;
+
+            const orderId = generateOrderId();
+            
+            // 模擬訂單提交到後端
+            const orderDetails = {
+                orderId: orderId,
+                customerInfo: {
+                    name: customerName,
+                    phone: customerPhone,
+                    address: customerAddress
+                },
+                items: JSON.parse(JSON.stringify(cart)), // 深拷貝購物車內容
+                subTotal: subTotal,
+                shippingFee: SHIPPING_FEE,
+                totalAmount: totalWithShipping,
+                paymentMethod: paymentMethod,
+                timestamp: new Date().toISOString()
+            };
+
+            console.log('模擬訂單已送出:', orderDetails);
+            
+            // 如果有會員登入，將訂單加入會員的購買紀錄
+            if (loggedInUser) {
+              users[loggedInUser.email].purchaseHistory.push(orderDetails);
+              saveUsers();
+            }
+
+            // 在實際應用中，這裡會發送 AJAX 請求到後端 API
+
+            // 顯示感謝訊息
+            document.getElementById('checkoutForm').classList.add('hidden');
+            document.getElementById('orderSummary').classList.add('hidden');
+            document.getElementById('thankYouMessage').classList.remove('hidden');
+            document.getElementById('finalOrderId').textContent = orderId;
+
+            // 結帳成功後清空購物車（但由 closeModal 的 clearCartAfter 參數控制，此處不直接清空）
+        });
     }
 
-    // Review Form Submission Listener
-    const reviewForm = document.getElementById('reviewForm');
-    if (reviewForm) {
-        reviewForm.addEventListener('submit', submitReview);
-    }
+    // Initial load of reviews
+    loadReviews();
+    renderReviews();
 
     // Floating cart visibility on scroll
     window.addEventListener('scroll', () => {
         if (floatingCart) {
             if (window.scrollY > lastScrollY && window.scrollY > 100) { // Scrolling down and past initial 100px
-                floatingCart.classList.add('hidden-scroll'); // Assuming you have this CSS class defined for hiding
+                floatingCart.classList.add('hidden-scroll');
             } else { // Scrolling up
                 floatingCart.classList.remove('hidden-scroll');
             }
@@ -931,55 +721,329 @@
         }
     });
 
-    // Member login/register form submissions
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
-    document.getElementById('registerForm').addEventListener('submit', handleRegister);
-
-    // Navbar member link click event
-    document.getElementById('memberLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        openMemberModal();
+    // 瀏覽紀錄：模擬點擊產品時記錄
+    document.getElementById('product-cards').addEventListener('click', (event) => {
+      const button = event.target.closest('button.btn-press');
+      if (button) {
+        const productName = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+        if (loggedInUser && productName) {
+          const user = users[loggedInUser.email];
+          // 避免重複記錄連續點擊
+          if (user.browsingHistory.length === 0 || user.browsingHistory[user.browsingHistory.length - 1].productName !== productName) {
+            user.browsingHistory.push({ productName, timestamp: new Date().toISOString() });
+            saveUsers();
+          }
+        }
+      }
     });
 
-    // Mobile menu toggle
-    const menuButton = document.getElementById('menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (menuButton && mobileMenu) {
-      menuButton.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-      });
-    }
+    // 會員登入/註冊表單提交
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (users[email] && users[email].password === password) {
+        loggedInUser = { email: email };
+        users[email].loginCount = (users[email].loginCount || 0) + 1; // 增加登入次數
+        saveUsers();
+        saveLoginStatus();
+        updateMemberUI();
+        closeMemberModal();
+        alert('登入成功！');
+      } else {
+        alert('電子郵件或密碼錯誤。');
+      }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      // 在這裡添加 Gmail 驗證
+      const gmailPattern = /.+@gmail\.com$/;
+      if (!gmailPattern.test(email)) {
+          alert('請輸入有效的 Gmail 帳號 (例如: example@gmail.com)！');
+          return;
+      }
+
+      if (users[email]) {
+        alert('此電子郵件已被註冊。');
+        return;
+      }
+
+      users[email] = {
+        password: password,
+        purchaseHistory: [],
+        browsingHistory: [],
+        loginCount: 0
+      };
+      saveUsers();
+      alert('註冊成功！請登入。');
+      showLoginForm();
+    });
   });
 
-
-  // --- API Data Fetching & Rendering ---
-
-  /**
-   * Fetches products from the backend and renders them to the page.
-   */
-  async function fetchAndRenderProducts() {
-    const productContainer = document.getElementById('product-cards');
-    if (!productContainer) return;
-    productContainer.innerHTML = '<p class="text-center col-span-full text-lg text-gray-600">載入商品中...</p>';
-
-    try {
-        products = await makeApiRequest('GET', '/products/', null, false);
-        console.log('成功獲取商品資料:', products); // Debugging log
-        if (products && products.length === 0) {
-            productContainer.innerHTML = '<p class="text-center col-span-full text-lg text-gray-600">目前沒有商品可顯示。</p>';
-        }
-        renderProductOptionsForReview(); // Populate product select for review form
-        filterAndRenderProducts(); // Apply filters and render
-    } catch (error) {
-        // Error notification is handled by makeApiRequest, just update UI
-        productContainer.innerHTML = `<p class="text-center col-span-full text-lg text-red-600">載入商品失敗。</p>`;
-    }
+  // 購物車徽章更新函數
+  function updateCartBadge() {
+      const cartBadge = document.getElementById('cart-badge');
+      if (!cartBadge) return;
+      let totalItems = 0;
+      for (let item in cart) {
+          totalItems += cart[item].qty;
+      }
+      cartBadge.textContent = totalItems;
+      cartBadge.style.display = totalItems > 0 ? 'flex' : 'none'; // 有商品才顯示徽章
   }
 
-  /**
-   * Filters and renders products based on selected category and search term.
-   */
-  function filterAndRenderProducts() {
+  // 結帳彈窗相關函數
+  function openCheckoutModal() {
+    const modal = document.getElementById('checkoutModal');
+    const modalContent = document.getElementById('checkoutModalContent');
+    
+    if (Object.keys(cart).length === 0) {
+      alert('購物車是空的，請先加入商品！');
+      return;
+    }
+
+    // 渲染購物車內容到彈窗
+    const modalCartItems = document.getElementById('modalCartItems');
+    const modalSubTotalAmount = document.getElementById('modalSubTotalAmount');
+    const modalTotalAmount = document.getElementById('modalTotalAmount');
+    
+    modalCartItems.innerHTML = '';
+    let subTotal = 0;
+
+    for (let item in cart) {
+      const { qty, price } = cart[item];
+      const sub = qty * price;
+      subTotal += sub;
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'flex justify-between items-center';
+      itemDiv.innerHTML = `
+        <span>${item} x ${qty}</span>
+        <span>${formatPrice(sub)}</span>
+      `;
+      modalCartItems.appendChild(itemDiv);
+    }
+    modalSubTotalAmount.textContent = formatPrice(subTotal);
+    modalTotalAmount.textContent = formatPrice(subTotal + SHIPPING_FEE); // 加上運費
+
+    // 重置表單和隱藏感謝訊息
+    document.getElementById('checkoutForm').reset();
+    document.getElementById('checkoutForm').classList.remove('hidden');
+    document.getElementById('orderSummary').classList.remove('hidden');
+    document.getElementById('thankYouMessage').classList.add('hidden');
+    
+    // 預設將信用卡欄位隱藏並禁用
+    document.getElementById('creditCardFields').classList.add('hidden');
+    document.getElementById('cardNumber').disabled = true;
+    document.getElementById('expiryDate').disabled = true;
+    document.getElementById('cvv').disabled = true;
+
+    // 顯示模態框並觸發動畫
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modalContent.classList.remove('scale-95', 'opacity-0');
+      modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10); // 小延遲確保過渡效果
+  }
+
+  function closeCheckoutModal(clearCartAfter = false) {
+    const modal = document.getElementById('checkoutModal');
+    const modalContent = document.getElementById('checkoutModalContent');
+    
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      if (clearCartAfter) {
+        cart = {};
+        saveCart();
+        renderCart();
+        renderCartPanel();
+        updateCartBadge(); // 清空購物車後更新徽章
+      }
+    }, 300); // 等待動畫結束後隱藏
+  }
+
+  // 修改原有的 checkout 函數，使其呼叫 openCheckoutModal
+  window.checkout = function() {
+    openCheckoutModal();
+  };
+
+  // 信用卡欄位顯示/隱藏控制
+  window.toggleCreditCardFields = function(radio) {
+      const creditCardFields = document.getElementById('creditCardFields');
+      const cardNumber = document.getElementById('cardNumber');
+      const expiryDate = document.getElementById('expiryDate');
+      const cvv = document.getElementById('cvv');
+
+      if (radio.value === 'creditCard') {
+          creditCardFields.classList.remove('hidden');
+          cardNumber.disabled = false;
+          expiryDate.disabled = false;
+          cvv.disabled = false;
+          // 可以選擇在這裡將這些欄位設為 required，如果要求用戶必須填寫
+          // cardNumber.required = true;
+          // expiryDate.required = true;
+          // cvv.required = true;
+      } else {
+          creditCardFields.classList.add('hidden');
+          cardNumber.disabled = true;
+          expiryDate.disabled = true;
+          cvv.disabled = true;
+          // cardNumber.required = false;
+          // expiryDate.required = false;
+          // cvv.required = false;
+      }
+  };
+
+
+  function toggleCartPanel() {
+    const panel = document.getElementById('cartPanel');
+    panel.classList.toggle('translate-x-full');
+
+    // 浮動購物車圖標點擊動畫
+    const floatingCart = document.getElementById('floatingCart');
+    floatingCart.classList.add('animate-pop'); // 添加一個臨時動畫類別
+    setTimeout(() => {
+        floatingCart.classList.remove('animate-pop'); // 移除類別以允許再次觸發
+    }, 300); // 動畫持續時間
+  }
+
+  function renderCartPanel() {
+    const panelBody = document.getElementById('cartPanelBody');
+    const panelTotal = document.getElementById('panelTotal');
+    if (!panelBody || !panelTotal) return; 
+
+    panelBody.innerHTML = '';
+    let total = 0;
+
+    for (let item in cart) {
+      const { qty, price } = cart[item];
+      const sub = qty * price;
+      total += sub;
+
+      const div = document.createElement('div');
+      div.className = 'border-b pb-2';
+      div.innerHTML = `
+        <div class="font-bold">${item}</div>
+        <div class="text-sm text-gray-500">單價：${formatPrice(price)}</div>
+        <div class="flex justify-between items-center mt-1">
+          <button onclick="updateQty('${item}', -1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded">➖</button>
+          ${qty}
+          <button onclick="updateQty('${item}', 1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded">➕</button>
+          <div class="text-right font-bold">${formatPrice(sub)}</div>
+        </div>
+      `;
+      panelBody.appendChild(div);
+    }
+    panelTotal.textContent = formatPrice(total);
+  }
+
+  const products = [
+    {
+      name: 'GEISHA 水洗（114g）',
+      country: '衣索比亞',
+      variety: 'GEISHA 水洗',
+      flavor: '接骨木花、茉莉花橙花、白玫瑰、百合花蘋果、野莓果醬、檸檬、百香果',
+      roast: '淺焙',
+      weight: '114g',
+      expiry: '2025/10/12',
+      price: 280,
+      category: 'light',
+      image: './image/image_1.png' 
+    },
+    {
+      name: 'Heirloom 雙重厭氧（227g）- 批次A',
+      country: '衣索比亞',
+      variety: 'Heirloom',
+      flavor: '茉莉、橙花、蜂蜜、水蜜桃',
+      roast: '淺焙',
+      weight: '227g',
+      expiry: '2025/10/28',
+      price: 600,
+      category: 'light',
+      image: './image/image_2.png'
+    },
+    {
+      name: 'Heirloom 雙重厭氧（227g）- 批次B',
+      country: '衣索比亞',
+      variety: 'Heirloom',
+      flavor: '茉莉、橙花、蜂蜜、水蜜桃',
+      roast: '淺焙',
+      weight: '227g',
+      expiry: '2025/10/31',
+      price: 600,
+      category: 'light',
+      image: './image/image_3.png'
+    },
+    {
+      name: 'GEISHA（227g）中淺焙',
+      country: '衣索比亞',
+      variety: 'GEISHA',
+      flavor: '接骨木花、茉莉花橙花、白玫瑰、百合花蘋果、野莓果醬、檸檬',
+      roast: '中淺焙',
+      weight: '227g',
+      expiry: '2025/11/01',
+      price: 540,
+      category: 'medium',
+      image: './image/image_4.png'
+    },
+    {
+      name: 'GEISHA 水洗（227g）2280m',
+      country: '衣索比亞',
+      variety: 'GEISHA 水洗',
+      flavor: '接骨木花、茉莉花橙花、白玫瑰、百合花蘋果、野莓果醬、檸檬',
+      roast: '中淺焙',
+      weight: '227g',
+      expiry: '2025/11/01',
+      price: 540,
+      category: 'medium',
+      image: './image/image_5.png'
+    },
+    {
+      name: '衣索比亞 淺焙（227g）',
+      country: '衣索比亞',
+      variety: '',
+      flavor: '接骨木花、茉莉花橙花、白玫瑰、百合花蘋果、野莓果醬、檸檬',
+      roast: '淺焙',
+      weight: '227g',
+      expiry: '2025/11/01',
+      price: 540,
+      category: 'light',
+      image: './image/image_6.png'
+    },
+    {
+      name: '哥斯大黎加 Geisha 白蜜（114g）',
+      country: '哥斯大黎加',
+      variety: 'Geisha（藝妓）',
+      flavor: '百合花、野薑花、檸檬草、柑橘、紅色莓果、蜂蜜',
+      roast: '淺焙',
+      weight: '114g',
+      expiry: '2025/08/15',
+      price: 800,
+      category: 'light',
+      image: './image/image_7.png'
+    },
+    {
+      name: '哥斯大黎加 淺焙（227g）',
+      country: '哥斯大黎加',
+      variety: '',
+      flavor: '百合花、野薑花、檸檬草、柑橘、紅色莓果、蜂蜜',
+      roast: '淺焙',
+      weight: '227g',
+      expiry: '2025/08/15',
+      price: 1800,
+      category: 'light',
+      image: './image/image_8.png'
+    }
+  ];
+
+  function renderProducts() {
     const productContainer = document.getElementById('product-cards');
     const categoryFilter = document.getElementById('category').value;
     const searchTerm = document.getElementById('product-search').value.toLowerCase();
@@ -988,13 +1052,10 @@
     productContainer.innerHTML = '';
 
     const filteredProducts = products.filter(p => {
-        const productRoast = p.roast ? p.roast.toLowerCase() : '';
-        const matchesCategory = categoryFilter === 'all' || productRoast === categoryFilter;
-
-        const productDescription = p.description ? p.description.toLowerCase() : '';
-        const productName = p.name ? p.name.toLowerCase() : '';
-        const matchesSearch = productName.includes(searchTerm) || productDescription.includes(searchTerm);
-        
+        const matchesCategory = categoryFilter === 'all' || p.category === categoryFilter;
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                              p.flavor.toLowerCase().includes(searchTerm) ||
+                              p.country.toLowerCase().includes(searchTerm);
         return matchesCategory && matchesSearch;
     });
 
@@ -1007,123 +1068,43 @@
       const card = document.createElement('div');
       card.className = 'ornate-box hover:scale-105 transition-transform duration-300';
       card.innerHTML = `
-        <img src="${p.image_url || 'https://placehold.co/400x300/F7F3E9/3F2305?text=No+Image'}" alt="${p.name}" class="w-full h-48 object-cover rounded mb-3" />
+        <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover rounded mb-3" />
         <h3 class="text-xl font-bold mb-1">${p.name}</h3>
-        <p class="mb-1">描述：${p.description || 'N/A'}</p>
-        <p class="mb-1">焙度：${p.roast || 'N/A'} | 是否上架: ${p.is_available ? '是' : '否'}</p>
-        <p class="mb-2 font-bold">${formatPrice(p.price)}</p>
-        <button class="bg-[#3f2e2e] text-white px-4 py-2 rounded btn-press ${p.is_available ? '' : 'opacity-50 cursor-not-allowed'}" 
-                onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})" 
-                ${p.is_available ? '' : 'disabled'}>
-            ${p.is_available ? '加入購物車' : '已下架'}
-        </button>
+        <p class="mb-1">國家：${p.country}｜品種：${p.variety}</p>
+        <p class="mb-1">風味：${p.flavor}</p>
+        <p class="mb-1">焙度：${p.roast}｜重量：${p.weight}</p>
+        <p class="mb-1">期限：${p.expiry}</p>
+        <p class="mb-2 font-bold">NT$${p.price}</p>
+        <button class="bg-[#3f2e2e] text-white px-4 py-2 rounded btn-press" onclick="addToCart('${p.name}', ${p.price})">加入購物車</button>
       `;
       productContainer.appendChild(card);
     });
   }
 
-  /**
-   * Fetches and renders reviews from the backend.
-   */
-  async function fetchAndRenderReviews() {
-    const reviewList = document.getElementById('review-list');
-    if (!reviewList) return;
-    reviewList.innerHTML = '<p class="text-center text-gray-600">載入評論中...</p>';
-
-    try {
-        reviews = await makeApiRequest('GET', '/reviews/', null, false);
-        console.log('成功獲取評論資料:', reviews); // Debugging log
-        reviewList.innerHTML = ''; // Clear loading message
-
-        if (reviews.length === 0) {
-            reviewList.innerHTML = '<p class="text-center text-gray-600">目前沒有任何評論。</p>';
-            return;
-        }
-
-        reviews.slice().reverse().forEach(review => { // Display newest reviews first
-            const div = document.createElement('div');
-            div.className = 'p-4 border rounded shadow bg-white';
-            const userName = review.user ? review.user.username : '匿名用戶';
-            const productName = review.product ? `針對商品: ${review.product.name}` : '通用評論';
-            const ratingStars = '⭐️'.repeat(review.rating);
-            div.innerHTML = `
-                <strong>${userName} ${ratingStars}</strong> (${productName})
-                <p class="mt-1">${review.comment}</p>
-                <p class="text-xs text-gray-500">${new Date(review.created_at).toLocaleString()}</p>
-            `;
-            reviewList.appendChild(div);
-        });
-    } catch (error) {
-        reviewList.innerHTML = `<p class="text-center text-red-600">載入評論失敗。</p>`;
-    }
-  }
-
-  /**
-   * Populates the product selection dropdown in the review form.
-   */
-  function renderProductOptionsForReview() {
-      const selectElement = document.getElementById('review-product-select');
-      if (!selectElement) return;
-
-      // Clear existing options, keep the first "Select product..." option
-      while (selectElement.children.length > 1) {
-          selectElement.removeChild(selectElement.lastChild);
-      }
-
-      products.forEach(p => {
-          const option = document.createElement('option');
-          option.value = p.id;
-          option.textContent = p.name;
-          selectElement.appendChild(option);
-      });
-  }
-
-
-  // --- Cart Functions ---
-
-  /**
-   * Adds a product to the cart.
-   * @param {number} productId - The ID of the product.
-   * @param {string} name - The name of the product.
-   * @param {number} price - The price of the product.
-   */
-  window.addToCart = function(productId, name, price) {
-    // Check if the product is available before adding to cart
-    const product = products.find(p => p.id === productId);
-    if (!product || !product.is_available) {
-        showNotification('error', `商品 "${name}" 目前已下架或不存在，無法加入購物車。`);
-        return;
-    }
-
-    if (!cart[productId]) {
-        cart[productId] = { id: productId, name: name, qty: 0, price: price };
-    }
-    cart[productId].qty++;
+  window.addToCart = function(name, price) {
+    if (!cart[name]) cart[name] = { qty: 0, price };
+    cart[name].qty++;
     saveCart(); 
     renderCart();
     renderCartPanel(); 
     updateCartBadge();
-    showNotification('success', `"${name}" 已加入購物車！`); // Show success notification
     
-    // Trigger floating cart animation
-    if (floatingCart) {
-        floatingCart.classList.add('animate-pop');
-        setTimeout(() => {
-            floatingCart.classList.remove('animate-pop');
-        }, 300); 
-    }
+    const floatingCart = document.getElementById('floatingCart');
+    floatingCart.classList.add('animate-pop');
+    setTimeout(() => {
+        floatingCart.classList.remove('animate-pop');
+    }, 300); 
   }
 
-  /**
-   * Updates the quantity of a product in the cart.
-   * @param {number} productId - The ID of the product.
-   * @param {number} delta - The change in quantity (+1 or -1).
-   */
-  window.updateQty = function(productId, delta) {
-    if (!cart[productId]) return;
-    cart[productId].qty += delta;
-    if (cart[productId].qty <= 0) {
-      delete cart[productId];
+  function formatPrice(n) {
+    return `NT$${n.toLocaleString('zh-Hant-TW')}`;
+  }
+
+  window.updateQty = function(name, delta) {
+    if (!cart[name]) return;
+    cart[name].qty += delta;
+    if (cart[name].qty <= 0) {
+      delete cart[name];
     }
     saveCart(); 
     renderCart();
@@ -1131,114 +1112,57 @@
     updateCartBadge();
   }
 
-  /**
-   * Removes a product from the cart.
-   * @param {number} productId - The ID of the product to remove.
-   */
-  window.removeItem = function(productId) {
-    delete cart[productId];
+  window.removeItem = function(name) {
+    delete cart[name];
     saveCart(); 
     renderCart();
     renderCartPanel(); 
     updateCartBadge();
   }
 
-  /**
-   * Renders the main cart table.
-   */
   function renderCart() {
     const tbody = document.getElementById('cart-body');
     if (!tbody) return;
     tbody.innerHTML = '';
     let total = 0;
 
-    if (Object.keys(cart).length === 0) {
-        const noItemsRow = document.createElement('tr');
-        noItemsRow.innerHTML = `<td colspan="5" class="p-4 text-center text-gray-500">購物車是空的。</td>`;
-        tbody.appendChild(noItemsRow);
-    } else {
-        for (let productId in cart) {
-            const tr = document.createElement('tr');
-            const item = cart[productId];
-            const sub = item.qty * item.price;
-            total += sub;
+    for (let item in cart) {
+      const tr = document.createElement('tr');
+      const { qty, price } = cart[item];
+      const sub = qty * price;
+      total += sub;
 
-            tr.innerHTML = `
-                <td class="border p-2">${item.name}</td>
-                <td class="border p-2 flex items-center gap-2">
-                    <button onclick="updateQty(${item.id}, -1)" class="px-2 bg-gray-200 rounded btn-press">➖</button>
-                    ${item.qty}
-                    <button onclick="updateQty(${item.id}, 1)" class="px-2 bg-gray-200 rounded btn-press">➕</button>
-                </td>
-                <td class="border p-2">${formatPrice(item.price)}</td>
-                <td class="border p-2 flex justify-between items-center">
-                    ${formatPrice(sub)}
-                    <button onclick="removeItem(${item.id})" class="ml-4 text-red-500 btn-press">🗑️</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        }
+      tr.innerHTML = `
+        <td class="border p-2">${item}</td>
+        <td class="border p-2 flex items-center gap-2">
+          <button onclick="updateQty('${item}', -1)" class="px-2 bg-gray-200 rounded">➖</button>
+          ${qty}
+          <button onclick="updateQty('${item}', 1)" class="px-2 bg-gray-200 rounded">➕</button>
+        </td>
+        <td class="border p-2">${formatPrice(price)}</td>
+        <td class="border p-2 flex justify-between items-center">
+          ${formatPrice(sub)}
+          <button onclick="removeItem('${item}')" class="ml-4 text-red-500">🗑️</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     }
 
     const totalElem = document.getElementById('total-amount');
     if (totalElem) totalElem.textContent = formatPrice(total);
   }
 
-  /**
-   * Renders the side cart panel.
-   */
-  function renderCartPanel() {
-    const panelBody = document.getElementById('cartPanelBody');
-    const panelTotal = document.getElementById('panelTotal');
-    if (!panelBody || !panelTotal) return; 
-
-    panelBody.innerHTML = '';
-    let total = 0;
-
-    if (Object.keys(cart).length === 0) {
-        panelBody.innerHTML = '<p class="text-center text-gray-500">購物車是空的。</p>';
-    } else {
-        for (let productId in cart) {
-            const item = cart[productId];
-            const sub = item.qty * item.price;
-            total += sub;
-
-            const div = document.createElement('div');
-            div.className = 'border-b pb-2';
-            div.innerHTML = `
-                <div class="font-bold">${item.name}</div>
-                <div class="text-sm text-gray-500">單價：${formatPrice(item.price)}</div>
-                <div class="flex justify-between items-center mt-1">
-                    <button onclick="updateQty(${item.id}, -1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded btn-press">➖</button>
-                    ${item.qty}
-                    <button onclick="updateQty(${item.id}, 1); renderCart(); renderCartPanel();" class="px-2 bg-gray-200 rounded btn-press">➕</button>
-                    <div class="text-right font-bold">${formatPrice(sub)}</div>
-                </div>
-            `;
-            panelBody.appendChild(div);
-        }
-    }
-    panelTotal.textContent = formatPrice(total);
-  }
-
-  /**
-   * Saves the current cart to localStorage.
-   */
+  // Save cart to Local Storage
   function saveCart() {
     localStorage.setItem('melodyBeansCart', JSON.stringify(cart));
-    // If user is logged in, also update their cart in local storage
-    if (loggedInUser && loggedInUser.username) {
-        let storedUsers = JSON.parse(localStorage.getItem('melodyBeansUsers') || '{}');
-        if (storedUsers[loggedInUser.username]) {
-            storedUsers[loggedInUser.username].cart = JSON.parse(JSON.stringify(cart));
-            localStorage.setItem('melodyBeansUsers', JSON.stringify(storedUsers));
-        }
+    // 如果用戶已登入，也更新其購物車綁定
+    if (loggedInUser) {
+        users[loggedInUser.email].cart = JSON.parse(JSON.stringify(cart));
+        saveUsers();
     }
   }
 
-  /**
-   * Loads the cart from localStorage.
-   */
+  // Load cart from Local Storage
   function loadCart() {
     const storedCart = localStorage.getItem('melodyBeansCart');
     if (storedCart) {
@@ -1246,24 +1170,48 @@
     }
   }
 
-  /**
-   * Updates the cart badge count.
-   */
-  function updateCartBadge() {
-      const cartBadge = document.getElementById('cart-badge');
-      if (!cartBadge) return;
-      let totalItems = 0;
-      for (let item in cart) {
-          totalItems += cart[item].qty;
-      }
-      cartBadge.textContent = totalItems;
-      cartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
+  // Review functions (add localStorage for persistence)
+  function loadReviews() {
+    const storedReviews = localStorage.getItem('melodyBeansReviews');
+    if (storedReviews) {
+      reviews = JSON.parse(storedReviews);
+    }
   }
 
-  /**
-   * Calculates the total amount of items in the cart.
-   * @returns {number} The total amount.
-   */
+  function saveReviews() {
+    localStorage.setItem('melodyBeansReviews', JSON.stringify(reviews));
+  }
+
+  window.submitReview = function(e) {
+    e.preventDefault();
+    const name = document.getElementById('reviewer').value;
+    const content = document.getElementById('review-content').value;
+    const rating = document.getElementById('review-rating').value;
+    
+    reviews.push({ name, content, rating, timestamp: new Date().toISOString() });
+    saveReviews();
+    renderReviews();
+    e.target.reset();
+  }
+ 
+  function renderReviews() {
+    const reviewList = document.getElementById('review-list');
+    if (!reviewList) return;
+    reviewList.innerHTML = ''; 
+    reviews.slice().reverse().forEach(review => {
+      const div = document.createElement('div');
+      div.className = 'p-4 border rounded shadow bg-white'; 
+      div.innerHTML = `<strong>${review.name} ${review.rating}</strong><p class="mt-1">${review.content}</p>`;
+      reviewList.appendChild(div);
+    });
+  }
+  
+  function generateOrderId() {
+    const now = new Date();
+    return `ORD-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+  }
+
+  // 計算購物車總金額的輔助函數
   function calculateCartTotal() {
       let total = 0;
       for (let item in cart) {
@@ -1272,260 +1220,36 @@
       return total;
   }
 
-  /**
-   * Toggles the visibility of the side cart panel.
-   */
-  window.toggleCartPanel = function() {
-    const panel = document.getElementById('cartPanel');
-    if (panel) { // Ensure panel exists
-        panel.classList.toggle('translate-x-full');
-
-        // Trigger floating cart animation when panel is opened/closed
-        if (floatingCart) {
-            floatingCart.classList.add('animate-pop');
-            setTimeout(() => {
-                floatingCart.classList.remove('animate-pop');
-            }, 300);
-        }
+  // Function to close mobile menu when a nav link is clicked
+  window.closeMenu = function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
     }
-  }
+  };
 
-  // --- Checkout Process Functions ---
+  // Toggle mobile menu for the hamburger icon (on DOMContentLoaded)
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-  /**
-   * Opens the checkout modal and populates it with cart items.
-   */
-  window.openCheckoutModal = function() {
-    closeModal("cartPanel"); // Close side cart panel first
-    if (!loggedInUser) {
-        showNotification('info', '請先登入會員才能進行結帳。');
-        openMemberModal();
-        return;
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
     }
-    if (Object.keys(cart).length === 0) {
-        showNotification('warning', '購物車是空的，請先加入商品！');
-        return;
-    }
+  });
 
-    const modalCartItems = document.getElementById('modalCartItems');
-    const modalSubTotalAmount = document.getElementById('modalSubTotalAmount');
-    const modalTotalAmount = document.getElementById('modalTotalAmount');
-    
-    modalCartItems.innerHTML = '';
-    let subTotal = 0;
-
-    for (let productId in cart) {
-      const item = cart[productId];
-      const sub = item.qty * item.price;
-      subTotal += sub;
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'flex justify-between items-center';
-      itemDiv.innerHTML = `
-        <span>${item.name} x ${item.qty}</span>
-        <span>${formatPrice(sub)}</span>
-      `;
-      modalCartItems.appendChild(itemDiv);
-    }
-    modalSubTotalAmount.textContent = formatPrice(subTotal);
-    modalTotalAmount.textContent = formatPrice(subTotal + SHIPPING_FEE);
-
-    // Reset form and hide thank you message
-    document.getElementById('checkoutForm').reset();
-    document.getElementById('checkoutForm').classList.remove('hidden');
-    document.getElementById('orderSummary').classList.remove('hidden');
-    document.getElementById('thankYouMessage').classList.add('hidden');
-    
-    // Set default payment method and show/hide fields
-    document.querySelector('input[name="paymentMethod"][value="creditCard"]').checked = true;
-    toggleCreditCardFields(document.querySelector('input[name="paymentMethod"][value="creditCard"]'));
-
-    // Populate recipient name if available from loggedInUser
-    document.getElementById('recipientName').value = loggedInUser.full_name || loggedInUser.username || '';
-    // Reset other fields as they are not typically stored in user profile directly
-    document.getElementById('recipientPhone').value = '';
-    document.getElementById('shippingAddressPostalCode').value = '';
-    document.getElementById('shippingAddressDetail').value = '';
-    document.getElementById('deliveryNotes').value = '';
-    document.getElementById('deliveryTimePreference').value = ''; // Reset preference
-
-    openModal("checkoutModal");
-  }
-
-  /**
-   * Handles the submission of the checkout form.
-   * @param {Event} e - The form submission event.
-   */
-  async function handleCheckoutSubmit(e) {
-      e.preventDefault();
-
-      // Basic client-side validation using HTML5 built-in validation
-      const form = e.target;
-      if (!form.checkValidity()) {
-          showNotification('error', '請檢查所有必填欄位並符合格式要求。');
-          form.reportValidity(); // Show native browser validation messages
-          return;
-      }
-
-      if (!loggedInUser) {
-        showNotification('error', '請先登入才能完成訂單。');
-        return;
-      }
-      if (Object.keys(cart).length === 0) {
-          showNotification('error', '購物車是空的，無法結帳。');
-          return;
-      }
-
-      const deliveryMethod = document.getElementById('deliveryMethod').value;
-      const recipientName = document.getElementById('recipientName').value;
-      const recipientPhone = document.getElementById('recipientPhone').value;
-      const shippingAddressPostalCode = document.getElementById('shippingAddressPostalCode').value;
-      const shippingAddressDetail = document.getElementById('shippingAddressDetail').value;
-      const deliveryNotes = document.getElementById('deliveryNotes').value;
-      const deliveryTimePreference = document.getElementById('deliveryTimePreference').value;
-      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-      const itemsForAPI = Object.values(cart).map(item => ({
-          product_id: item.id,
-          quantity: item.qty
-      }));
-
-      const totalAmount = calculateCartTotal() + SHIPPING_FEE;
-
-      const orderData = {
-          items: itemsForAPI,
-          total_amount: totalAmount,
-          delivery_method: deliveryMethod,
-          recipient_name: recipientName,
-          recipient_phone: recipientPhone,
-          shipping_address_postal_code: shippingAddressPostalCode,
-          shipping_address_detail: shippingAddressDetail,
-          delivery_notes: deliveryNotes || null,
-          delivery_time_preference: deliveryTimePreference || null,
-          payment_method: paymentMethod
-      };
-
-      try {
-          const newOrder = await makeApiRequest('POST', '/orders/', orderData, true); // Requires authentication
-          showNotification('success', '訂單已成功送出！');
-          
-          document.getElementById('checkoutForm').classList.add('hidden');
-          document.getElementById('orderSummary').classList.add('hidden');
-          document.getElementById('thankYouMessage').classList.remove('hidden');
-          document.getElementById('finalOrderId').textContent = newOrder.id; // Display backend-returned order ID
-          
-          // Add order to user's purchase history in local storage
-          let storedUsers = JSON.parse(localStorage.getItem('melodyBeansUsers') || '{}');
-          if (loggedInUser && storedUsers[loggedInUser.username]) {
-              if (!storedUsers[loggedInUser.username].purchaseHistory) {
-                  storedUsers[loggedInUser.username].purchaseHistory = [];
-              }
-              storedUsers[loggedInUser.username].purchaseHistory.push(newOrder); // Store the full order response
-              localStorage.setItem('melodyBeansUsers', JSON.stringify(storedUsers));
-          }
-
-          // Cart is cleared by closeCheckoutModal(true) after showing thank you message
-      } catch (error) {
-          // Error notification handled by makeApiRequest, no need to duplicate here
-      }
-  }
-
-  /**
-   * Controls the visibility and required status of credit card fields based on payment method.
-   * @param {HTMLInputElement} radio - The radio button element that was clicked.
-   */
-  window.toggleCreditCardFields = function(radio) {
-      const creditCardFields = document.getElementById('creditCardFields');
-      const cardNumber = document.getElementById('cardNumber');
-      const expiryDate = document.getElementById('expiryDate');
-      const cvv = document.getElementById('cvv');
-      const bankTransferInfo = document.getElementById('bankTransferInfo');
-
-      if (radio.value === 'creditCard') {
-          creditCardFields.classList.remove('hidden');
-          bankTransferInfo.classList.add('hidden');
-          cardNumber.disabled = false;
-          expiryDate.disabled = false;
-          cvv.disabled = false;
-          cardNumber.required = true;
-          expiryDate.required = true;
-          cvv.required = true;
-      } else if (radio.value === 'bankTransfer') {
-          creditCardFields.classList.add('hidden');
-          bankTransferInfo.classList.remove('hidden');
-          cardNumber.disabled = true;
-          expiryDate.disabled = true;
-          cvv.disabled = true;
-          cardNumber.required = false;
-          expiryDate.required = false;
-          cvv.required = false;
-      }
-  }
-
-
-  // --- Review Submission ---
-
-  /**
-   * Handles the submission of a new review.
-   * @param {Event} e - The form submission event.
-   */
-  async function submitReview(e) {
-    e.preventDefault();
-
-    if (!loggedInUser) {
-        showNotification('info', '請先登入才能發表評論。');
-        openMemberModal();
-        return;
-    }
-
-    const reviewContent = document.getElementById('review-content').value;
-    const reviewRating = parseInt(document.getElementById('review-rating').value);
-    const reviewProductId = document.getElementById('review-product-select').value;
-    
-    if (!reviewContent || isNaN(reviewRating)) {
-        showNotification('error', '請填寫評論內容並選擇評分！');
-        return;
-    }
-
-    const reviewData = {
-        product_id: reviewProductId ? parseInt(reviewProductId) : null,
-        rating: reviewRating,
-        comment: reviewContent
-    };
-
-    try {
-        await makeApiRequest('POST', '/reviews/', reviewData, true); // Requires authentication
-        showNotification('success', '評論送出成功！');
-        document.getElementById('reviewForm').reset();
-        await fetchAndRenderReviews(); // Re-fetch and render reviews
-    } catch (error) {
-        // Error notification handled by makeApiRequest, no need to duplicate here
-    }
-  }
-
-
-  // --- Member Login/Register/Logout Functions ---
-
-  /**
-   * Opens the member modal, showing login/register forms or member info based on login status.
-   */
+  // 會員模態框相關函數
   function openMemberModal() {
     const modal = document.getElementById('memberModal');
     const modalContent = document.getElementById('memberModalContent');
     
-    // Determine content based on login status
-    if (loggedInUser) {
-        document.getElementById('loginSection').classList.add('hidden');
-        document.getElementById('registerSection').classList.add('hidden');
-        document.getElementById('memberInfo').classList.remove('hidden');
-        document.getElementById('loggedInUsername').textContent = loggedInUser.username;
-        document.getElementById('loggedInUserEmail').textContent = loggedInUser.email;
-        document.getElementById('loggedInUserFullName').textContent = loggedInUser.full_name || '未提供';
-        document.getElementById('loggedInUserIsAdmin').textContent = loggedInUser.is_admin ? '是' : '否'; // Display admin status
-    } else {
-        showLoginForm(); // Default to login form if not logged in
-    }
-    hidePurchaseHistory(); // Always hide purchase history when opening main member modal
+    // 重置為登入介面
+    showLoginForm();
+    hidePurchaseHistory();
 
+    // 顯示模態框並觸發動畫
     modal.classList.remove('hidden');
     setTimeout(() => {
       modalContent.classList.remove('scale-95', 'opacity-0');
@@ -1533,275 +1257,165 @@
     }, 10);
   }
 
-  /**
-   * Closes the member modal.
-   */
   function closeMemberModal() {
-    closeModal('memberModal');
+    const modal = document.getElementById('memberModal');
+    const modalContent = document.getElementById('memberModalContent');
+    
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
   }
 
-  /**
-   * Handles user login form submission.
-   * @param {Event} e - The form submission event.
-   */
-  async function handleLogin(e) {
-      e.preventDefault();
-      const username = document.getElementById('loginUsername').value;
-      const password = document.getElementById('loginPassword').value;
-
-      try {
-          const response = await makeApiRequest('POST', '/auth/login', new URLSearchParams({
-              username: username,
-              password: password
-          }), false); // Login does not require prior authentication
-
-          const token = response.access_token;
-          localStorage.setItem('accessToken', token); // Store JWT Token
-
-          // Fetch and store user info
-          const currentUser = await makeApiRequest('GET', '/auth/me', null, true);
-          loggedInUser = currentUser;
-          localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser)); // Store user info
-
-          // Also update a simulated local user database for cart/history persistence
-          let storedUsers = JSON.parse(localStorage.getItem('melodyBeansUsers') || '{}');
-          if (!storedUsers[loggedInUser.username]) {
-              storedUsers[loggedInUser.username] = { purchaseHistory: [], cart: {}, browsingHistory: [] };
-          }
-          // Sync cart from local storage to user object, or vice-versa
-          if (Object.keys(cart).length > 0) { // If there are items in the anonymous cart, transfer them
-              storedUsers[loggedInUser.username].cart = JSON.parse(JSON.stringify(cart));
-          } else if (storedUsers[loggedInUser.username].cart) { // If user has a stored cart, load it
-              cart = JSON.parse(JSON.stringify(storedUsers[loggedInUser.username].cart));
-          }
-          localStorage.setItem('melodyBeansUsers', JSON.stringify(storedUsers));
-          saveCart(); // Persist the combined cart
-
-          showNotification('success', '登入成功！');
-          updateMemberUI();
-          closeMemberModal();
-      } catch (error) {
-          // Error notification handled by makeApiRequest, no need to duplicate here
-      }
-  }
-
-  /**
-   * Handles user registration form submission.
-   * @param {Event} e - The form submission event.
-   */
-  async function handleRegister(e) {
-      e.preventDefault();
-      const username = document.getElementById('registerUsername').value;
-      const email = document.getElementById('registerEmail').value;
-      const password = document.getElementById('registerPassword').value;
-      const fullName = document.getElementById('registerFullName').value;
-
-      try {
-          const userData = {
-              username: username,
-              email: email,
-              password: password,
-              full_name: fullName || null
-          };
-          await makeApiRequest('POST', '/auth/register', userData, false);
-          showNotification('success', '註冊成功！請登入。');
-          
-          // Simulate adding new user to local storage for persistence
-          let storedUsers = JSON.parse(localStorage.getItem('melodyBeansUsers') || '{}');
-          storedUsers[username] = { 
-              purchaseHistory: [], 
-              cart: {}, 
-              browsingHistory: [] ,
-              email: email,
-              full_name: fullName || null
-          };
-          localStorage.setItem('melodyBeansUsers', JSON.stringify(storedUsers));
-
-          showLoginForm(); // Switch to login form after successful registration
-      } catch (error) {
-          // Error notification handled by makeApiRequest, no need to duplicate here
-      }
-  }
-
-  /**
-   * Checks the user's login status from localStorage and updates UI accordingly.
-   */
-  async function checkLoginStatus() {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      try {
-        const currentUser = await makeApiRequest('GET', '/auth/me', null, true);
-        loggedInUser = currentUser;
-        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser)); // Ensure local storage is in sync
-
-        // Sync local cart with user's stored cart upon auto-login
-        let storedUsers = JSON.parse(localStorage.getItem('melodyBeansUsers') || '{}');
-        if (loggedInUser && storedUsers[loggedInUser.username] && storedUsers[loggedInUser.username].cart) {
-            cart = JSON.parse(JSON.stringify(storedUsers[loggedInUser.username].cart));
-            saveCart(); // Persist the loaded cart
-        }
-
-        showNotification('info', `歡迎回來，${loggedInUser.username}！`);
-      } catch (error) {
-        console.error('自動登入失敗:', error);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('loggedInUser');
-        loggedInUser = null;
-        updateMemberUI();
-        // showNotification('error', '自動登入失敗，請重新登入。'); // Redundant if makeApiRequest already showed it
-      }
-    } else {
-        loggedInUser = null;
-        updateMemberUI();
-    }
-  }
-
-  /**
-   * Logs out the current user.
-   */
-  window.logout = function() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('loggedInUser');
-    loggedInUser = null;
-    showNotification('success', '您已登出！');
-    updateMemberUI();
-    closeMemberModal(); // Close modal after logout
-    cart = {}; // Clear cart on logout
-    saveCart();
-    renderCart();
-    renderCartPanel();
-    updateCartBadge();
-  }
-
-  /**
-   * Updates the member UI elements (e.g., "會員登入/註冊" link, member info section).
-   */
-  function updateMemberUI() {
-    const memberLink = document.getElementById('memberLink');
-    if (memberLink) {
-        if (loggedInUser) {
-            memberLink.textContent = `歡迎 ${loggedInUser.username}！`;
-            memberLink.onclick = () => { openMemberModal(); return false; };
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('registerSection').classList.add('hidden');
-            document.getElementById('memberInfo').classList.remove('hidden');
-            document.getElementById('loggedInUsername').textContent = loggedInUser.username;
-            document.getElementById('loggedInUserEmail').textContent = loggedInUser.email;
-            document.getElementById('loggedInUserFullName').textContent = loggedInUser.full_name || '未提供';
-            document.getElementById('loggedInUserIsAdmin').textContent = loggedInUser.is_admin ? '是' : '否';
-        } else {
-            memberLink.textContent = '會員登入/註冊';
-            memberLink.onclick = () => { openMemberModal(); return false; };
-            document.getElementById('loginSection').classList.remove('hidden');
-            document.getElementById('registerSection').classList.add('hidden');
-            document.getElementById('memberInfo').classList.add('hidden');
-        }
-    }
-  }
-
-  /**
-   * Shows the login form and hides other sections in the member modal.
-   */
   function showLoginForm() {
     document.getElementById('loginSection').classList.remove('hidden');
     document.getElementById('registerSection').classList.add('hidden');
     document.getElementById('memberInfo').classList.add('hidden');
-    document.getElementById('purchaseHistorySection').classList.add('hidden'); // Ensure history is hidden
-    document.getElementById('loginForm').reset(); // Clear form
+    document.getElementById('loginForm').reset(); // 清空表單
   }
 
-  /**
-   * Shows the registration form and hides other sections in the member modal.
-   */
   function showRegisterForm() {
     document.getElementById('loginSection').classList.add('hidden');
     document.getElementById('registerSection').classList.remove('hidden');
     document.getElementById('memberInfo').classList.add('hidden');
-    document.getElementById('purchaseHistorySection').classList.add('hidden'); // Ensure history is hidden
-    document.getElementById('registerForm').reset(); // Clear form
+    document.getElementById('registerForm').reset(); // 清空表單
   }
 
-  // --- Purchase History Functions ---
+  function updateMemberUI() {
+    const memberLink = document.getElementById('memberLink');
+    const loggedInUserEmail = document.getElementById('loggedInUserEmail');
+    const loginSection = document.getElementById('loginSection');
+    const registerSection = document.getElementById('registerSection');
+    const memberInfo = document.getElementById('memberInfo');
 
-  /**
-   * Displays the current user's purchase history.
-   */
-  window.viewPurchaseHistory = async function() {
+    if (loggedInUser) {
+      memberLink.textContent = `歡迎 ${loggedInUser.email.split('@')[0]}！`;
+      memberLink.onclick = () => { openMemberModal(); return false; }; // 點擊顯示會員資訊
+      loggedInUserEmail.textContent = loggedInUser.email;
+      loginSection.classList.add('hidden');
+      registerSection.classList.add('hidden');
+      memberInfo.classList.remove('hidden');
+
+      // 檢查是否有儲存的購物車，並與會員購物車同步
+      const userCart = users[loggedInUser.email].cart || {};
+      if (Object.keys(userCart).length > 0 && Object.keys(cart).length === 0) {
+          cart = userCart;
+          saveCart(); // 更新本地儲存
+          renderCart();
+          renderCartPanel();
+          updateCartBadge();
+      } else if (Object.keys(cart).length > 0 && JSON.stringify(cart) !== JSON.stringify(userCart)) {
+          // 如果本地購物車有內容且與會員購物車不同，以本地為準並更新會員購物車
+          users[loggedInUser.email].cart = JSON.parse(JSON.stringify(cart));
+          saveUsers();
+      }
+      
+    } else {
+      memberLink.textContent = '會員登入/註冊';
+      memberLink.onclick = () => { openMemberModal(); return false; };
+      loggedInUserEmail.textContent = '';
+      loginSection.classList.remove('hidden');
+      registerSection.classList.add('hidden');
+      memberInfo.classList.add('hidden');
+      // 登出後，清空購物車，但保留本地 localStorage 的內容，下次登入前可恢復
+      // cart = {}; // 如果登出需要清空購物車，則啟用此行
+      // saveCart(); // 儲存清空後的購物車
+      // renderCart();
+      // renderCartPanel();
+      // updateCartBadge();
+    }
+  }
+
+  function saveUsers() {
+    localStorage.setItem('melodyBeansUsers', JSON.stringify(users));
+  }
+
+  function loadUsers() {
+    const storedUsers = localStorage.getItem('melodyBeansUsers');
+    if (storedUsers) {
+      users = JSON.parse(storedUsers);
+    }
+  }
+
+  function saveLoginStatus() {
+    if (loggedInUser) {
+      sessionStorage.setItem('melodyBeansLoggedInUser', JSON.stringify(loggedInUser));
+    } else {
+      sessionStorage.removeItem('melodyBeansLoggedInUser');
+    }
+  }
+
+  function checkLoginStatus() {
+    const storedLogin = sessionStorage.getItem('melodyBeansLoggedInUser');
+    if (storedLogin) {
+      loggedInUser = JSON.parse(storedLogin);
+      updateMemberUI();
+    }
+  }
+
+  window.logout = function() {
+    loggedInUser = null;
+    saveLoginStatus();
+    updateMemberUI();
+    closeMemberModal();
+    alert('您已登出！');
+  }
+
+  window.viewPurchaseHistory = function() {
     if (!loggedInUser) {
-      showNotification('info', '請先登入以查看購買紀錄。');
+      alert('請先登入以查看購買紀錄。');
       return;
     }
 
     const historyList = document.getElementById('purchaseHistoryList');
-    if (!historyList) return;
-    historyList.innerHTML = '<p class="text-center text-gray-600">載入購買紀錄中...</p>';
+    historyList.innerHTML = '';
+    const user = users[loggedInUser.email];
 
-    try {
-        // Fetch current user's orders from backend
-        // Note: '/orders/' endpoint in FastAPI expects a query parameter for user_id to filter
-        // We'll simulate fetching from local storage for consistency with current user management
-        let storedUsers = JSON.parse(localStorage.getItem('melodyBeansUsers') || '{}');
-        const userOrders = storedUsers[loggedInUser.username]?.purchaseHistory || [];
-
-        historyList.innerHTML = ''; // Clear loading message
-
-        if (userOrders.length === 0) {
-            historyList.innerHTML = '<p class="text-center text-gray-600">您目前沒有任何購買紀錄。</p>';
-        } else {
-            userOrders.slice().reverse().forEach(order => { // Display newest orders first
-                const orderDiv = document.createElement('div');
-                orderDiv.className = 'border p-3 rounded-md bg-white shadow-sm';
-                
-                let itemsHtml = '';
-                if (order.items && order.items.length > 0) {
-                    order.items.forEach(item => {
-                        const productName = item.product ? item.product.name : '未知商品'; // If product object is nested
-                        itemsHtml += `<li>${productName} x ${item.quantity} (${formatPrice(item.price_at_order)})</li>`;
-                    });
-                } else {
-                    itemsHtml = '<li>無商品項目</li>';
-                }
-
-                orderDiv.innerHTML = `
-                  <p class="font-bold">訂單號碼: ${order.id}</p>
-                  <p class="text-sm text-gray-600">日期: ${new Date(order.created_at).toLocaleString()}</p>
-                  <p class="mt-2 font-semibold">配送方式: ${order.delivery_method === 'homeDelivery' ? '宅配到府' : order.delivery_method}</p>
-                  <p class="mt-1 text-sm">收件人: ${order.recipient_name} (${order.recipient_phone})</p>
-                  <p class="mt-1 text-sm">配送地址: ${order.shipping_address_postal_code} ${order.shipping_address_detail}</p>
-                  <p class="mt-1 text-sm">備註: ${order.delivery_notes || '無'}</p>
-                  <p class="mt-1 text-sm">配送時間偏好: ${order.delivery_time_preference || '不限'}</p>
-                  <p class="mt-2 font-semibold">商品清單:</p>
-                  <ul class="list-disc list-inside text-sm ml-4">${itemsHtml}</ul>
-                  <p class="text-right font-semibold mt-2">總金額: ${formatPrice(order.total_amount)}</p>
-                  <p class="text-right text-xs text-gray-500">付款方式: ${order.payment_method === 'creditCard' ? '信用卡(模擬)' : '銀行轉帳'}</p>
-                  <p class="text-right font-semibold mt-2">狀態: <span class="${order.status === 'completed' ? 'text-green-600' : order.status === 'cancelled' ? 'text-red-600' : 'text-orange-600'}">${order.status}</span></p>
-                `;
-                historyList.appendChild(orderDiv);
-            });
+    if (user && user.purchaseHistory.length > 0) {
+      user.purchaseHistory.slice().reverse().forEach(order => {
+        const orderDiv = document.createElement('div');
+        orderDiv.className = 'border p-3 rounded-md bg-white shadow-sm';
+        
+        let itemsHtml = '';
+        for (const itemName in order.items) {
+            const item = order.items[itemName];
+            itemsHtml += `<li>${itemName} x ${item.qty} (NT$${item.price})</li>`;
         }
 
-        document.getElementById('memberInfo').classList.add('hidden');
-        document.getElementById('purchaseHistorySection').classList.remove('hidden');
-    } catch (error) {
-        historyList.innerHTML = `<p class="text-center text-red-600">載入購買紀錄失敗。</p>`;
+        orderDiv.innerHTML = `
+          <p class="font-bold">訂單號碼: ${order.orderId}</p>
+          <p class="text-sm text-gray-600">日期: ${new Date(order.timestamp).toLocaleString()}</p>
+          <p class="mt-2 font-semibold">商品清單:</p>
+          <ul class="list-disc list-inside text-sm ml-4">${itemsHtml}</ul>
+          <p class="text-right font-semibold mt-2">總金額: ${formatPrice(order.totalAmount)}</p>
+          <p class="text-right text-xs text-gray-500">付款方式: ${order.paymentMethod === 'cashOnDelivery' ? '貨到付款' : '信用卡(模擬)'}</p>
+        `;
+        historyList.appendChild(orderDiv);
+      });
+    } else {
+      historyList.innerHTML = '<p class="text-center text-gray-600">您目前沒有任何購買紀錄。</p>';
     }
+
+    document.getElementById('memberInfo').classList.add('hidden');
+    document.getElementById('purchaseHistorySection').classList.remove('hidden');
   }
 
-  /**
-   * Hides the purchase history section and shows the member info section.
-   */
   window.hidePurchaseHistory = function() {
     document.getElementById('purchaseHistorySection').classList.add('hidden');
     document.getElementById('memberInfo').classList.remove('hidden');
   }
 
-  /**
-   * Helper function to close mobile menu.
-   */
-  window.closeMenu = function() {
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-      mobileMenu.classList.add('hidden');
+  // 輔助函數：記錄瀏覽紀錄（可以放在 addToCart 或產品卡片點擊事件中）
+  function recordBrowsingHistory(productName) {
+    if (loggedInUser) {
+      const user = users[loggedInUser.email];
+      user.browsingHistory.push({ productName, timestamp: new Date().toISOString() });
+      saveUsers();
+      // console.log(`已記錄 ${loggedInUser.email} 瀏覽了 ${productName}`);
     }
-  };
+  }
+
 </script>
+�
