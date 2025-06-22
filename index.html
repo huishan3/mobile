@@ -102,7 +102,7 @@
         vertical-align: middle; /* Align content vertically */
       }
       /* Checkout Modal Background Blur */
-      #checkoutModal {
+      #checkoutModal, #memberModal {
         backdrop-filter: blur(5px); /* Add this for blur effect on the background */
       }
       /* 導航連結 Hover 效果 */
@@ -215,18 +215,22 @@
         <ul id="navbar-links" class="hidden md:flex gap-6 text-lg">
           <li><a href="#home" class="hover:underline navbar-link-hover" onclick="closeMenu()">首頁</a></li>
           <li><a href="#products" class="hover:underline navbar-link-hover" onclick="closeMenu()">商品</a></li>
+          <li><a href="#education" class="hover:underline navbar-link-hover" onclick="closeMenu()">咖啡知識</a></li>
           <li><a href="#cart" class="hover:underline navbar-link-hover" onclick="closeMenu()">購物車</a></li>
           <li><a href="#review" class="hover:underline navbar-link-hover" onclick="closeMenu()">評論</a></li>
           <li><a href="#about" class="hover:underline navbar-link-hover" onclick="closeMenu()">關於我們</a></li>
+          <li><a href="#" class="hover:underline navbar-link-hover" onclick="openMemberModal(); return false;" id="memberLink">會員登入/註冊</a></li>
         </ul>
         <button class="ml-4 text-sm underline hidden md:block">EN</button> </div>
       <div id="mobile-menu" class="hidden md:hidden bg-[#f5efe6] pb-4 px-6">
         <ul class="flex flex-col gap-2 text-lg">
           <li><a href="#home" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">首頁</a></li>
           <li><a href="#products" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">商品</a></li>
+          <li><a href="#education" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">咖啡知識</a></li>
           <li><a href="#cart" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">購物車</a></li>
           <li><a href="#review" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">評論</a></li>
           <li><a href="#about" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="closeMenu()">關於我們</a></li>
+          <li><a href="#" class="block py-2 hover:bg-[#eae0d5] rounded" onclick="openMemberModal(); closeMenu(); return false;">會員登入/註冊</a></li>
         </ul>
         <button class="mt-4 text-sm underline block mx-auto">EN</button>
       </div>
@@ -267,6 +271,106 @@
       </div>
     </section>
 
+    <!-- 新增咖啡教育內容區塊 -->
+    <section id="education" class="py-16 bg-[#fdfaf5] fade-up">
+      <div class="max-w-[1000px] mx-auto px-6">
+        <h2 class="text-3xl mb-8 text-center text-[#b58863]">📚 咖啡知識殿堂</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- 咖啡文章區塊 -->
+          <div class="ornate-box p-6">
+            <h3 class="text-2xl font-bold mb-4">深入了解咖啡處理法</h3>
+            
+            <div class="mb-6">
+              <h4 class="text-xl font-semibold mb-2">☀️ 日曬法（Natural Process）</h4>
+              <p class="mb-1">想像把新鮮的咖啡果實鋪在陽光下曬乾，像曬葡萄變葡萄乾。這就是日曬法。咖啡果實在曬乾的過程中，果肉的糖分會慢慢滲進豆子裡，讓它變得甜甜的，像是水果乾的感覺。</p>
+              <p class="font-bold">📌 風味特色：</p>
+              <ul class="list-disc list-inside ml-4 mb-2 text-sm">
+                <li>香氣奔放、甜感明顯、常有莓果或葡萄乾的味道。</li>
+              </ul>
+              <p class="font-bold">📌 適合喜歡：</p>
+              <ul class="list-disc list-inside ml-4 mb-4 text-sm">
+                <li>果香調、熱情奔放風味的你。</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="text-xl font-semibold mb-2">💧 水洗法（Washed Process）</h4>
+              <p class="mb-1">水洗法像是幫咖啡果實洗香香——把果肉用水沖掉，留下純淨的豆子。這種方式讓豆子的本質被保留下來，像是聽一首沒有伴奏的純淨旋律。</p>
+              <p class="font-bold">📌 風味特色：</p>
+              <ul class="list-disc list-inside ml-4 mb-2 text-sm">
+                <li>乾淨、明亮、酸值清晰、口感輕盈。</li>
+              </ul>
+              <p class="font-bold">📌 適合喜歡：</p>
+              <ul class="list-disc list-inside ml-4 mb-4 text-sm">
+                <li>茶感、清新、精緻風味的你。</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="text-xl font-semibold mb-2">🍯 蜜處理法（Honey Process）</h4>
+              <p class="mb-1">蜜處理不是加蜂蜜，而是讓咖啡果肉的「黏黏果膠層」保留在豆子上曬乾，像是一層自然糖漿。這就像是把日曬的甜感和水洗的清爽融合在一起，達到剛剛好的甜美平衡。</p>
+              <p class="font-bold">📌 風味特色：</p>
+              <ul class="list-disc list-inside ml-4 mb-2 text-sm">
+                <li>甜中帶酸、柔和圓潤、常有蜂蜜、水果、太妃糖的味道。</li>
+              </ul>
+              <p class="font-bold">📌 適合喜歡：</p>
+              <ul class="list-disc list-inside ml-4 mb-4 text-sm">
+                <li>平衡感、圓滑口感的你。</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="text-xl font-semibold mb-2">🌌 厭氧發酵（Anaerobic Fermentation）</h4>
+              <p class="mb-1">這是咖啡界的實驗室風味。咖啡果實被放進密閉容器中，不讓氧氣進來，像是「閉門造車」般發酵。這種方式可以創造出很特別的香氣和層次，有時像酒、有時像香料。</p>
+              <p class="font-bold">📌 風味特色：</p>
+              <ul class="list-disc list-inside ml-4 mb-2 text-sm">
+                <li>香氣奔放、口感層次豐富，帶有酒香、發酵感。</li>
+              </ul>
+              <p class="font-bold">📌 適合喜歡：</p>
+              <ul class="list-disc list-inside ml-4 mb-4 text-sm">
+                <li>獨特、冒險、不一樣風味體驗的你。</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- 咖啡影片與保存方式區塊 -->
+          <div class="ornate-box p-6">
+            <h3 class="text-2xl font-bold mb-4">專業沖煮與保存</h3>
+            <p class="mb-4">學會正確的沖煮技巧和保存方式，讓您的每一杯咖啡都能達到最佳風味。</p>
+            
+            <div class="mb-6">
+              <h4 class="text-xl font-semibold mb-2">推薦沖煮影片：</h4>
+              <div class="aspect-video bg-gray-200 rounded overflow-hidden">
+                <!-- 嵌入 YouTube 影片或使用佔位圖 -->
+                <iframe 
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen
+                  class="w-full h-full"
+                  title="如何手沖咖啡 - 示範影片">
+                </iframe>
+                <p class="text-center text-sm text-gray-600 mt-2">（此為示範影片，實際將嵌入相關教學影片）</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="text-xl font-semibold mb-2">咖啡豆保存方式：</h4>
+              <ul class="list-disc list-inside space-y-2">
+                <li>**密封保存**：使用不透光、密封性好的容器。</li>
+                <li>**避光避濕**：避免陽光直射和潮濕環境。</li>
+                <li>**避免異味**：遠離有強烈氣味的物品。</li>
+                <li>**適溫存放**：建議存放在陰涼乾燥處，無需冷藏或冷凍（除非長時間保存）。</li>
+                <li>**最佳賞味期**：咖啡豆開封後，建議在一個月內飲用完畢以保持最佳風味。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="cart" class="py-16 bg-[#fff9f0] fade-up">
       <div class="max-w-[900px] mx-auto px-6">
         <h2 class="text-2xl mb-4">🛒 購物車</h2>
@@ -284,6 +388,7 @@
           </table>
         </div>
         <p class="text-right mt-4 font-bold">總金額：<span id="total-amount">NT$0</span></p>
+        <p class="text-sm text-red-600 text-right mt-2 font-bold">※ 本網站所有商品不提供退換貨服務。</p>
         <div class="text-right mt-4">
           <button onclick="checkout()" class="bg-[#3f2e2e] text-white px-6 py-2 rounded btn-press">結帳</button>
         </div>
@@ -341,6 +446,61 @@
       </div>
     </div> 
 
+    <!-- 會員登入/註冊模態框 -->
+    <div id="memberModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[10001] hidden">
+      <div class="bg-[#fff9f0] p-8 rounded-lg shadow-2xl w-full max-w-sm relative ornate-box transform scale-95 opacity-0 transition-all duration-300 mx-4" id="memberModalContent">
+        <button onclick="closeMemberModal()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">✕</button>
+        <h2 class="text-2xl font-bold mb-6 text-center text-[#b58863]">會員登入 / 註冊</h2>
+        
+        <div id="loginSection">
+          <form id="loginForm" class="grid gap-4">
+            <div>
+              <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
+              <input type="email" id="loginEmail" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的電子郵件" required>
+            </div>
+            <div>
+              <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">密碼</label>
+              <input type="password" id="loginPassword" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入密碼" required>
+            </div>
+            <button type="submit" class="bg-[#b58863] text-white px-6 py-3 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 text-lg font-semibold btn-press">登入</button>
+          </form>
+          <p class="text-center mt-4">還沒有帳號？<button onclick="showRegisterForm()" class="text-blue-600 hover:underline">立即註冊</button></p>
+        </div>
+
+        <div id="registerSection" class="hidden">
+          <form id="registerForm" class="grid gap-4">
+            <div>
+              <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
+              <input type="email" id="registerEmail" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的 Gmail 帳號" required pattern=".+@gmail\.com$" title="請輸入有效的 Gmail 帳號 (例如: example@gmail.com)">
+            </div>
+            <div>
+              <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">密碼</label>
+              <input type="password" id="registerPassword" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="設定密碼 (至少6位)" required minlength="6">
+            </div>
+            <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-3 rounded-md hover:bg-[#5a4444] transition-colors duration-300 text-lg font-semibold btn-press">註冊</button>
+          </form>
+          <p class="text-center mt-4">已有帳號？<button onclick="showLoginForm()" class="text-blue-600 hover:underline">返回登入</button></p>
+        </div>
+
+        <div id="memberInfo" class="hidden text-center py-4">
+          <h3 class="text-xl font-bold mb-4">會員資訊</h3>
+          <p class="mb-2">歡迎，<strong id="loggedInUserEmail"></strong>！</p>
+          <button onclick="viewPurchaseHistory()" class="bg-[#b58863] text-white px-4 py-2 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 btn-press">查看購買紀錄</button>
+          <button onclick="logout()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 ml-2 btn-press">登出</button>
+        </div>
+
+        <div id="purchaseHistorySection" class="hidden mt-6">
+            <h4 class="text-xl font-semibold mb-3">您的購買紀錄</h4>
+            <div id="purchaseHistoryList" class="space-y-3 max-h-60 overflow-y-auto">
+                <!-- 購買紀錄將動態載入這裡 -->
+            </div>
+            <button onclick="hidePurchaseHistory()" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 btn-press">返回會員中心</button>
+        </div>
+
+      </div>
+    </div>
+
+
     <div id="checkoutModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[10000] hidden">
       <div class="bg-[#fff9f0] p-8 rounded-lg shadow-2xl w-full max-w-lg relative ornate-box transform scale-95 opacity-0 transition-all duration-300 mx-4 sm:mx-auto max-h-[90vh] overflow-y-auto" id="checkoutModalContent">
         <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">✕</button>
@@ -351,10 +511,13 @@
           <h3 class="text-xl font-semibold mb-3">您的訂單</h3>
           <div id="modalCartItems" class="space-y-1 text-sm max-h-40 overflow-y-auto pr-2"> 
             </div>
-          <p class="text-right font-bold text-lg mt-4">總金額：<span id="modalTotalAmount">NT$0</span></p>
+          <p class="text-right font-bold text-lg mt-4">小計：<span id="modalSubTotalAmount">NT$0</span></p>
+          <p class="text-right text-sm text-gray-600">運費：NT$<span id="shippingFee">60</span></p>
+          <p class="text-right font-bold text-xl mt-2">總金額：<span id="modalTotalAmount">NT$0</span></p>
         </div>
 
         <form id="checkoutForm" class="grid grid-cols-1 gap-4">
+          <p class="text-sm text-red-600 font-bold">※ 本網站所有商品不提供退換貨服務。請您確認後再下單。</p>
           <div>
             <label for="customerName" class="block text-sm font-medium text-gray-700 mb-1">收件人姓名</label>
             <input type="text" id="customerName" class="p-3 border rounded-md w-full focus:ring-[#b58863] focus:border-[#b58863]" placeholder="請輸入您的姓名" required>
@@ -398,11 +561,16 @@
             </div>
           </div>
 
+          <div class="mt-2">
+            <h4 class="text-sm font-medium text-gray-700 mb-1">配送時間</h4>
+            <p class="text-sm text-gray-600">訂單確認後約 3-5 個工作天送達 (不含例假日)。</p>
+          </div>
+
           <button type="submit" class="bg-[#3f2e2e] text-white px-6 py-3 rounded-md hover:bg-[#5a4444] transition-colors duration-300 text-lg font-semibold btn-press">確認下單</button>
         </form>
 
         <div id="thankYouMessage" class="text-center py-8 hidden">
-          <h3 class="text-3xl font-bold text-[#b58863] mb-4">🎉 訂單已成立！感謝您的購買！ 🎉</h3>
+          <h3 class="text-3xl font-bold text-[#b58863] mb-4">� 訂單已成立！感謝您的購買！ 🎉</h3>
           <p class="text-lg mb-2">您的訂單號碼為：<strong id="finalOrderId" class="text-[#3f2e2e]"></strong></p>
           <p class="text-md text-gray-700">我們將盡快為您處理訂單，請留意電話或信件通知。</p>
           <button onclick="closeCheckoutModal(true)" class="mt-8 bg-[#b58863] text-white px-8 py-3 rounded-md hover:bg-[#a07a5c] transition-colors duration-300 text-lg btn-press">繼續購物</button>
@@ -423,6 +591,11 @@
   let lastScrollY = 0;
   const floatingCart = document.getElementById('floatingCart');
 
+  // 會員相關變數
+  let loggedInUser = null; // 儲存當前登入的使用者資訊
+  let users = {}; // 模擬使用者資料庫 { email: { password, purchaseHistory: [], browsingHistory: [], loginCount } }
+  const SHIPPING_FEE = 60; // 運費
+
   window.addEventListener('DOMContentLoaded', () => {
     const fadeSections = document.querySelectorAll('.fade-up');
     const observer = new IntersectionObserver((entries) => {
@@ -436,6 +609,8 @@
     fadeSections.forEach(section => observer.observe(section));
 
     loadCart(); // Load cart from localStorage on page load
+    loadUsers(); // 加載使用者資料
+    checkLoginStatus(); // 檢查登入狀態
     updateCartBadge(); // 初始化購物車徽章數量
     renderProducts(); // Initial render of products
     renderCart(); // Initial render of main cart
@@ -488,7 +663,9 @@
                     return;
                 }
             }
-
+            
+            const subTotal = calculateCartTotal();
+            const totalWithShipping = subTotal + SHIPPING_FEE;
 
             const orderId = generateOrderId();
             
@@ -500,13 +677,22 @@
                     phone: customerPhone,
                     address: customerAddress
                 },
-                items: cart,
-                totalAmount: calculateCartTotal(),
+                items: JSON.parse(JSON.stringify(cart)), // 深拷貝購物車內容
+                subTotal: subTotal,
+                shippingFee: SHIPPING_FEE,
+                totalAmount: totalWithShipping,
                 paymentMethod: paymentMethod,
                 timestamp: new Date().toISOString()
             };
 
             console.log('模擬訂單已送出:', orderDetails);
+            
+            // 如果有會員登入，將訂單加入會員的購買紀錄
+            if (loggedInUser) {
+              users[loggedInUser.email].purchaseHistory.push(orderDetails);
+              saveUsers();
+            }
+
             // 在實際應用中，這裡會發送 AJAX 請求到後端 API
 
             // 顯示感謝訊息
@@ -534,6 +720,69 @@
             lastScrollY = window.scrollY;
         }
     });
+
+    // 瀏覽紀錄：模擬點擊產品時記錄
+    document.getElementById('product-cards').addEventListener('click', (event) => {
+      const button = event.target.closest('button.btn-press');
+      if (button) {
+        const productName = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+        if (loggedInUser && productName) {
+          const user = users[loggedInUser.email];
+          // 避免重複記錄連續點擊
+          if (user.browsingHistory.length === 0 || user.browsingHistory[user.browsingHistory.length - 1].productName !== productName) {
+            user.browsingHistory.push({ productName, timestamp: new Date().toISOString() });
+            saveUsers();
+          }
+        }
+      }
+    });
+
+    // 會員登入/註冊表單提交
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (users[email] && users[email].password === password) {
+        loggedInUser = { email: email };
+        users[email].loginCount = (users[email].loginCount || 0) + 1; // 增加登入次數
+        saveUsers();
+        saveLoginStatus();
+        updateMemberUI();
+        closeMemberModal();
+        alert('登入成功！');
+      } else {
+        alert('電子郵件或密碼錯誤。');
+      }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      // 在這裡添加 Gmail 驗證
+      const gmailPattern = /.+@gmail\.com$/;
+      if (!gmailPattern.test(email)) {
+          alert('請輸入有效的 Gmail 帳號 (例如: example@gmail.com)！');
+          return;
+      }
+
+      if (users[email]) {
+        alert('此電子郵件已被註冊。');
+        return;
+      }
+
+      users[email] = {
+        password: password,
+        purchaseHistory: [],
+        browsingHistory: [],
+        loginCount: 0
+      };
+      saveUsers();
+      alert('註冊成功！請登入。');
+      showLoginForm();
+    });
   });
 
   // 購物車徽章更新函數
@@ -560,14 +809,16 @@
 
     // 渲染購物車內容到彈窗
     const modalCartItems = document.getElementById('modalCartItems');
+    const modalSubTotalAmount = document.getElementById('modalSubTotalAmount');
     const modalTotalAmount = document.getElementById('modalTotalAmount');
+    
     modalCartItems.innerHTML = '';
-    let totalForModal = 0;
+    let subTotal = 0;
 
     for (let item in cart) {
       const { qty, price } = cart[item];
       const sub = qty * price;
-      totalForModal += sub;
+      subTotal += sub;
       const itemDiv = document.createElement('div');
       itemDiv.className = 'flex justify-between items-center';
       itemDiv.innerHTML = `
@@ -576,7 +827,8 @@
       `;
       modalCartItems.appendChild(itemDiv);
     }
-    modalTotalAmount.textContent = formatPrice(totalForModal);
+    modalSubTotalAmount.textContent = formatPrice(subTotal);
+    modalTotalAmount.textContent = formatPrice(subTotal + SHIPPING_FEE); // 加上運費
 
     // 重置表單和隱藏感謝訊息
     document.getElementById('checkoutForm').reset();
@@ -903,6 +1155,11 @@
   // Save cart to Local Storage
   function saveCart() {
     localStorage.setItem('melodyBeansCart', JSON.stringify(cart));
+    // 如果用戶已登入，也更新其購物車綁定
+    if (loggedInUser) {
+        users[loggedInUser.email].cart = JSON.parse(JSON.stringify(cart));
+        saveUsers();
+    }
   }
 
   // Load cart from Local Storage
@@ -982,4 +1239,183 @@
       });
     }
   });
+
+  // 會員模態框相關函數
+  function openMemberModal() {
+    const modal = document.getElementById('memberModal');
+    const modalContent = document.getElementById('memberModalContent');
+    
+    // 重置為登入介面
+    showLoginForm();
+    hidePurchaseHistory();
+
+    // 顯示模態框並觸發動畫
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modalContent.classList.remove('scale-95', 'opacity-0');
+      modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+  }
+
+  function closeMemberModal() {
+    const modal = document.getElementById('memberModal');
+    const modalContent = document.getElementById('memberModalContent');
+    
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
+  }
+
+  function showLoginForm() {
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('registerSection').classList.add('hidden');
+    document.getElementById('memberInfo').classList.add('hidden');
+    document.getElementById('loginForm').reset(); // 清空表單
+  }
+
+  function showRegisterForm() {
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('registerSection').classList.remove('hidden');
+    document.getElementById('memberInfo').classList.add('hidden');
+    document.getElementById('registerForm').reset(); // 清空表單
+  }
+
+  function updateMemberUI() {
+    const memberLink = document.getElementById('memberLink');
+    const loggedInUserEmail = document.getElementById('loggedInUserEmail');
+    const loginSection = document.getElementById('loginSection');
+    const registerSection = document.getElementById('registerSection');
+    const memberInfo = document.getElementById('memberInfo');
+
+    if (loggedInUser) {
+      memberLink.textContent = `歡迎 ${loggedInUser.email.split('@')[0]}！`;
+      memberLink.onclick = () => { openMemberModal(); return false; }; // 點擊顯示會員資訊
+      loggedInUserEmail.textContent = loggedInUser.email;
+      loginSection.classList.add('hidden');
+      registerSection.classList.add('hidden');
+      memberInfo.classList.remove('hidden');
+
+      // 檢查是否有儲存的購物車，並與會員購物車同步
+      const userCart = users[loggedInUser.email].cart || {};
+      if (Object.keys(userCart).length > 0 && Object.keys(cart).length === 0) {
+          cart = userCart;
+          saveCart(); // 更新本地儲存
+          renderCart();
+          renderCartPanel();
+          updateCartBadge();
+      } else if (Object.keys(cart).length > 0 && JSON.stringify(cart) !== JSON.stringify(userCart)) {
+          // 如果本地購物車有內容且與會員購物車不同，以本地為準並更新會員購物車
+          users[loggedInUser.email].cart = JSON.parse(JSON.stringify(cart));
+          saveUsers();
+      }
+      
+    } else {
+      memberLink.textContent = '會員登入/註冊';
+      memberLink.onclick = () => { openMemberModal(); return false; };
+      loggedInUserEmail.textContent = '';
+      loginSection.classList.remove('hidden');
+      registerSection.classList.add('hidden');
+      memberInfo.classList.add('hidden');
+      // 登出後，清空購物車，但保留本地 localStorage 的內容，下次登入前可恢復
+      // cart = {}; // 如果登出需要清空購物車，則啟用此行
+      // saveCart(); // 儲存清空後的購物車
+      // renderCart();
+      // renderCartPanel();
+      // updateCartBadge();
+    }
+  }
+
+  function saveUsers() {
+    localStorage.setItem('melodyBeansUsers', JSON.stringify(users));
+  }
+
+  function loadUsers() {
+    const storedUsers = localStorage.getItem('melodyBeansUsers');
+    if (storedUsers) {
+      users = JSON.parse(storedUsers);
+    }
+  }
+
+  function saveLoginStatus() {
+    if (loggedInUser) {
+      sessionStorage.setItem('melodyBeansLoggedInUser', JSON.stringify(loggedInUser));
+    } else {
+      sessionStorage.removeItem('melodyBeansLoggedInUser');
+    }
+  }
+
+  function checkLoginStatus() {
+    const storedLogin = sessionStorage.getItem('melodyBeansLoggedInUser');
+    if (storedLogin) {
+      loggedInUser = JSON.parse(storedLogin);
+      updateMemberUI();
+    }
+  }
+
+  window.logout = function() {
+    loggedInUser = null;
+    saveLoginStatus();
+    updateMemberUI();
+    closeMemberModal();
+    alert('您已登出！');
+  }
+
+  window.viewPurchaseHistory = function() {
+    if (!loggedInUser) {
+      alert('請先登入以查看購買紀錄。');
+      return;
+    }
+
+    const historyList = document.getElementById('purchaseHistoryList');
+    historyList.innerHTML = '';
+    const user = users[loggedInUser.email];
+
+    if (user && user.purchaseHistory.length > 0) {
+      user.purchaseHistory.slice().reverse().forEach(order => {
+        const orderDiv = document.createElement('div');
+        orderDiv.className = 'border p-3 rounded-md bg-white shadow-sm';
+        
+        let itemsHtml = '';
+        for (const itemName in order.items) {
+            const item = order.items[itemName];
+            itemsHtml += `<li>${itemName} x ${item.qty} (NT$${item.price})</li>`;
+        }
+
+        orderDiv.innerHTML = `
+          <p class="font-bold">訂單號碼: ${order.orderId}</p>
+          <p class="text-sm text-gray-600">日期: ${new Date(order.timestamp).toLocaleString()}</p>
+          <p class="mt-2 font-semibold">商品清單:</p>
+          <ul class="list-disc list-inside text-sm ml-4">${itemsHtml}</ul>
+          <p class="text-right font-semibold mt-2">總金額: ${formatPrice(order.totalAmount)}</p>
+          <p class="text-right text-xs text-gray-500">付款方式: ${order.paymentMethod === 'cashOnDelivery' ? '貨到付款' : '信用卡(模擬)'}</p>
+        `;
+        historyList.appendChild(orderDiv);
+      });
+    } else {
+      historyList.innerHTML = '<p class="text-center text-gray-600">您目前沒有任何購買紀錄。</p>';
+    }
+
+    document.getElementById('memberInfo').classList.add('hidden');
+    document.getElementById('purchaseHistorySection').classList.remove('hidden');
+  }
+
+  window.hidePurchaseHistory = function() {
+    document.getElementById('purchaseHistorySection').classList.add('hidden');
+    document.getElementById('memberInfo').classList.remove('hidden');
+  }
+
+  // 輔助函數：記錄瀏覽紀錄（可以放在 addToCart 或產品卡片點擊事件中）
+  function recordBrowsingHistory(productName) {
+    if (loggedInUser) {
+      const user = users[loggedInUser.email];
+      user.browsingHistory.push({ productName, timestamp: new Date().toISOString() });
+      saveUsers();
+      // console.log(`已記錄 ${loggedInUser.email} 瀏覽了 ${productName}`);
+    }
+  }
+
 </script>
+�
