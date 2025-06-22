@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+    <html lang="zh-Hant">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Melody Beans 後台管理</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+          /* 基本字體設定 */
+          body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans CJK TC', sans-serif;
+            background-color: #f7f3e9; /* 淺米色背景 */
+            color: #3f2305; /* 深棕色文字 */
+          }
+          /* 自定義字體（如果需要，與首頁mobile.html保持一致） */
+          @font-face {
+            font-family: 'BiaoKaiTiWeb';
+            src: url('./fonts/BiaoKaiTi.woff2') format('woff2'),
+                 url('./fonts/BiaoKaiTi.woff') format('woff'),
+                 url('./fonts/DFKai-SB.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
+          .font-custom {
+            font-family: 'BiaoKaiTiWeb', 'DFKai-SB', '標楷體', sans-serif;
+          }
+
+          /* Navbar 樣式 */
+          nav {
+            background-color: #6d4c41; /* 深棕色 */
+            color: #f7f3e9;
+          }
+          nav a {
+            color: #f7f3e9;
+            transition: color 0.3s ease;
+          }
+          nav a:hover {
+            color: #d7ccc8; /* 淺棕色 */
+          }
+          .btn-primary {
+            background-color: #8d6e63; /* 中棕色 */
+            color: #f7f3e9;
+          }
+          .btn-primary:hover {
+            background-color: #a1887f; /* 稍淺的棕色 */
+          }
+          
+          /* 通知容器樣式 */
+          #notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .notification-item {
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+          }
+
+          .notification-item.show {
+            opacity: 1;
+            transform: translateY(0);
+          }
+
+          .notification-item.success {
+            background-color: #e6ffe6; /* Light green */
+            color: #28a745; /* Dark green */
+            border: 1px solid #28a745;
+          }
+
+          .notification-item.error {
+            background-color: #ffe6e6; /* Light red */
+            color: #dc3545; /* Dark red */
+            border: 1px solid #dc3545;
+          }
+
+          .notification-item .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+          }
+
+          .notification-item .close-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.2em;
+            margin-left: auto;
+            cursor: pointer;
+          }
+        </style>
+      </head>
+      <body class="bg-gradient-to-br from-yellow-100 to-amber-100 min-h-screen text-stone-800">
+
+        <div id="notification-container"></div>
+
+        <nav class="bg-stone-800 p-4 text-white shadow-md">
+          <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold font-custom">管理後台</a>
+            <div>
+              <a href="首頁mobile.html" class="hover:text-amber-200 mr-4">前往前台</a>
+              <button id="admin-logout-button" class="hover:text-amber-200">登出</button>
+            </div>
+          </div>
+        </nav>
+
+        <div id="admin-panel" class="container mx-auto p-6 mt-8 bg-white rounded-lg shadow-xl" style="display: none;">
+          <h1 class="text-4xl font-bold mb-8 text-center">後台管理面板</h1>
+
+          <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">功能選單</h2>
+            <div class="flex flex-wrap gap-4">
+              <button onclick="loadTabContent('products')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">商品管理</button>
+              <button onclick="loadTabContent('orders')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">訂單管理</button>
+              <button onclick="loadTabContent('reviews')" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg">評論管理</button>
+              <button onclick="loadTabContent('users')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg">用戶管理</button>
+            </div>
+          </div>
+
+          <div id="tab-content">
+            <div id="dashboard-tab" class="tab-pane">
+              <h2 class="text-3xl font-bold mb-6">儀表板</h2>
+              <p>歡迎來到管理後台，請選擇左側功能選單進行操作。</p>
+              </div>
+
+            <div id="products-tab" class="tab-pane hidden">
+              <h2 class="text-3xl font-bold mb-6">商品管理</h2>
+              <div class="mb-8 p-6 border rounded-lg shadow-sm bg-gray-50">
+                <h3 class="text-2xl font-bold mb-4">新增商品</h3>
+                <form id="add-product-form" onsubmit="event.preventDefault(); addProduct();">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label for="product-name" class="block text-gray-700 text-sm font-bold mb-2">商品名稱:</label>
+                      <input type="text" id="product-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div>
+                      <label for="product-price" class="block text-gray-700 text-sm font-bold mb-2">價格:</label>
+                      <input type="number" id="product-price" step="0.01" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label for="product-description" class="block text-gray-700 text-sm font-bold mb-2">描述:</label>
+                    <textarea id="product-description" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                  </div>
+                  <div class="mt-4">
+                    <label for="product-image-url" class="block text-gray-700 text-sm font-bold mb-2">圖片 URL:</label>
+                    <input type="url" id="product-image-url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  </div>
+                  <div class="mt-4 flex items-center">
+                    <input type="checkbox" id="product-is-available" class="mr-2 leading-tight">
+                    <label for="product-is-available" class="text-gray-700">是否上架</label>
+                  </div>
+                  <div class="mt-6 flex justify-end">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">新增商品</button>
+                  </div>
+                </form>
+              </div>
+
+              <h3 class="text-2xl font-bold mb-4">商品列表</h3>
+              <div id="product-list" class="space-y-4">
+                </div>
+
+              <div id="edit-product-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+                  <h3 class="text-2xl font-bold mb-4">編輯商品</h3>
+                  <form id="edit-product-form" onsubmit="event.preventDefault(); updateProduct();">
+                    <input type="hidden" id="edit-product-id">
+                    <div class="mb-4">
+                      <label for="edit-product-name" class="block text-gray-700 text-sm font-bold mb-2">商品名稱:</label>
+                      <input type="text" id="edit-product-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div class="mb-4">
+                      <label for="edit-product-description" class="block text-gray-700 text-sm font-bold mb-2">描述:</label>
+                      <textarea id="edit-product-description" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </div>
+                    <div class="mb-4">
+                      <label for="edit-product-price" class="block text-gray-700 text-sm font-bold mb-2">價格:</label>
+                      <input type="number" id="edit-product-price" step="0.01" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+                    <div class="mb-4">
+                      <label for="edit-product-image-url" class="block text-gray-700 text-sm font-bold mb-2">圖片 URL:</label>
+                      <input type="url" id="edit-product-image-url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-6 flex items-center">
+                      <input type="checkbox" id="edit-product-is-available" class="mr-2 leading-tight">
+                      <label for="edit-product-is-available" class="text-gray-700">是否上架</label>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                      <button type="button" onclick="closeEditProductModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">取消</button>
+                      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">更新</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+
+            <div id="orders-tab" class="tab-pane hidden">
+              <h2 class="text-3xl font-bold mb-6">訂單管理</h2>
+              <div id="order-list" class="space-y-4">
+                </div>
+
+              <div id="order-details-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                  <h3 class="text-2xl font-bold mb-4">訂單詳情 #<span id="detail-order-id"></span></h3>
+                  <div id="order-details-content" class="mb-6">
+                    </div>
+                  <form id="order-status-form" onsubmit="event.preventDefault(); updateOrderStatus(event);" class="flex items-center gap-2">
+                    <input type="hidden" id="order-status-order-id">
+                    <label for="order-status-select" class="font-semibold">更新狀態:</label>
+                    <select id="order-status-select" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                      <option value="pending">待處理</option>
+                      <option value="processing">處理中</option>
+                      <option value="completed">已完成</option>
+                      <option value="cancelled">已取消</option>
+                    </select>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">更新</button>
+                  </form>
+                  <div class="flex justify-end mt-6">
+                    <button type="button" onclick="closeOrderDetailsModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">關閉</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div id="reviews-tab" class="tab-pane hidden">
+              <h2 class="text-3xl font-bold mb-6">評論管理</h2>
+              <div id="review-list" class="space-y-4">
+                </div>
+            </div>
+
+            <div id="users-tab" class="tab-pane hidden">
+              <h2 class="text-3xl font-bold mb-6">用戶管理</h2>
+              <div id="user-list" class="space-y-4">
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="access-denied" class="container mx-auto p-6 mt-8 bg-white rounded-lg shadow-xl text-center text-red-600" style="display: none;">
+          <h1 class="text-4xl font-bold mb-4">訪問被拒絕</h1>
+          <p class="text-lg">您沒有權限訪問此管理面板，請以管理員身份登入。</p>
+          <a href="首頁mobile.html#login-register" class="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">前往登入頁面</a>
+        </div>
+
+
+        <script>
+          // Notification System (Copied from index.html for consistency)
+          function showNotification(type, message) {
+              const container = document.getElementById('notification-container');
+              const notification = document.createElement('div');
+              notification.className = `notification-item ${type}`;
+              notification.innerHTML = `
+                  <span class="icon">${type === 'success' ? '✔' : '✖'}</span>
+                  <span>${message}</span>
+                  <button class="close-btn" onclick="this.parentNode.remove()">×</button>
+              `;
+              container.appendChild(notification);
+
+              setTimeout(() => notification.classList.add('show'), 10);
+
+              setTimeout(() => {
+                  notification.classList.remove('show');
+                  notification.addEventListener('transitionend', () => notification.remove());
+              }, 5000);
+          }
+
+
+          // Helper for authenticated API requests for Admin
+          async function makeAdminApiRequest(method, endpoint, data = null) {
+              const token = localStorage.getItem('accessToken');
+              if (!token) {
+                  throw new Error('No access token found. Please log in as an admin.');
+              }
+
+              const headers = {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              };
+
+              const options = {
+                  method: method,
+                  headers: headers,
+                  body: data ? JSON.stringify(data) : null
+              };
+
+              try {
+                  const response = await fetch(`/api${endpoint}`, options);
+                  if (!response.ok) {
+                      const errorData = await response.json(); // Attempt to parse JSON error
+                      // Use errorData.detail or fall back to generic message
+                      throw new Error(errorData.detail || `API Request Failed: ${response.statusText}`);
+                  }
+                  // Handle 204 No Content for DELETE or other successful ops without body
+                  if (response.status === 204 || method === 'DELETE') {
+                      return null; // Or return a success object/message
+                  }
+                  return await response.json();
+              } catch (error) {
+                  console.error(`Error during API request to ${endpoint}:`, error);
+                  throw error; // Re-throw error to let the caller handle it
+              }
+          }
+
+          // --- Authentication and Authorization ---
+          async function checkAdminStatus() {
+            const token = localStorage.getItem('accessToken');
+            const adminPanel = document.getElementById('admin-panel');
+            const accessDenied = document.getElementById('access-denied');
+            const adminLogoutButton = document.getElementById('admin-logout-button');
+
+            if (!token) {
+                adminPanel.style.display = 'none';
+                accessDenied.style.display = 'block';
+                showNotification('error', '未登入或無權訪問管理面板。');
+                return;
+            }
+
+            try {
+                const currentUser = await makeAdminApiRequest('GET', '/auth/me');
+                if (currentUser.is_admin) {
+                    adminPanel.style.display = 'block';
+                    accessDenied.style.display = 'none';
+                    adminLogoutButton.onclick = logoutAdmin; // Assign logout function
+                    // Load default tab or dashboard
+                    loadTabContent('dashboard');
+                } else {
+                    adminPanel.style.display = 'none';
+                    accessDenied.style.display = 'block';
+                    showNotification('error', '您不是管理員，無法訪問此面板。');
+                }
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                showNotification('error', `驗證管理員狀態失敗: ${error.message}`);
+                adminPanel.style.display = 'none';
+                accessDenied.style.display = 'block';
+                localStorage.removeItem('accessToken'); // Clear invalid token
+            }
+          }
+
+          function logoutAdmin() {
+            localStorage.removeItem('accessToken');
+            showNotification('success', '管理員已登出。');
+            window.location.href = '首頁mobile.html'; // Redirect to main page after logout
+          }
+
+          // --- Tab Navigation ---
+          function loadTabContent(tabName) {
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+              pane.classList.add('hidden');
+            });
+
+            // Show the selected tab pane
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+
+            // Fetch data for the tab
+            switch (tabName) {
+              case 'products':
+                fetchAndDisplayProducts();
+                break;
+              case 'orders':
+                fetchAndDisplayOrders();
+                break;
+              case 'reviews':
+                fetchAndDisplayReviews();
+                break;
+              case 'users':
+                fetchAndDisplayUsers();
+                break;
+              // 'dashboard' doesn't need specific data fetching beyond initial check
+            }
+          }
+
+          // --- Product Management ---
+          async function fetchAndDisplayProducts() {
+            const productListDiv = document.getElementById('product-list');
+            productListDiv.innerHTML = '<p class="text-center text-gray-500">載入商品中...</p>';
+            try {
+                const products = await makeAdminApiRequest('GET', '/products/');
+                productListDiv.innerHTML = ''; // Clear loading message
+
+                if (products.length === 0) {
+                    productListDiv.innerHTML = '<p class="text-center text-gray-500">目前沒有商品。</p>';
+                    return;
+                }
+
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow-sm';
+                    productItem.innerHTML = `
+                        <div>
+                            <p class="font-semibold">${product.name} - $${product.price.toFixed(2)}</p>
+                            <p class="text-gray-600 text-sm">ID: ${product.id} | ${product.is_available ? '上架中' : '已下架'}</p>
+                        </div>
+                        <div>
+                            <button onclick="openEditProductModal(${product.id})" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded-md mr-2">編輯</button>
+                            <button onclick="deleteProduct(${product.id})" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md">刪除</button>
+                        </div>
+                    `;
+                    productListDiv.appendChild(productItem);
+                });
+            } catch (error) {
+                showNotification('error', `載入商品失敗: ${error.message}`);
+                productListDiv.innerHTML = `<p class="text-center text-red-500">無法載入商品: ${error.message}</p>`;
+            }
+          }
+
+          async function addProduct() {
+            const name = document.getElementById('product-name').value;
+            const description = document.getElementById('product-description').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const imageUrl = document.getElementById('product-image-url').value;
+            const isAvailable = document.getElementById('product-is-available').checked;
+
+            if (!name || isNaN(price)) {
+                showNotification('error', '請輸入有效的商品名稱和價格。');
+                return;
+            }
+
+            try {
+                const productData = {
+                    name: name,
+                    description: description || null,
+                    price: price,
+                    image_url: imageUrl || null,
+                    is_available: isAvailable
+                };
+                await makeAdminApiRequest('POST', '/products/', productData);
+                showNotification('success', '商品新增成功！');
+                document.getElementById('add-product-form').reset();
+                fetchAndDisplayProducts(); // Refresh list
+            } catch (error) {
+                showNotification('error', `新增商品失敗: ${error.message}`);
+            }
+          }
+
+          let currentEditProductId = null; // To store the ID of the product being edited
+
+          async function openEditProductModal(productId) {
+            currentEditProductId = productId;
+            try {
+                const product = await makeAdminApiRequest('GET', `/products/${productId}`);
+                document.getElementById('edit-product-id').value = product.id;
+                document.getElementById('edit-product-name').value = product.name;
+                document.getElementById('edit-product-description').value = product.description || '';
+                document.getElementById('edit-product-price').value = product.price;
+                document.getElementById('edit-product-image-url').value = product.image_url || '';
+                document.getElementById('edit-product-is-available').checked = product.is_available;
+                document.getElementById('edit-product-modal').classList.remove('hidden');
+            } catch (error) {
+                showNotification('error', `載入商品資訊失敗: ${error.message}`);
+            }
+          }
+
+          function closeEditProductModal() {
+            document.getElementById('edit-product-modal').classList.add('hidden');
+            document.getElementById('edit-product-form').reset();
+            currentEditProductId = null;
+          }
+
+          async function updateProduct() {
+            const productId = document.getElementById('edit-product-id').value;
+            const name = document.getElementById('edit-product-name').value;
+            const description = document.getElementById('edit-product-description').value;
+            const price = parseFloat(document.getElementById('edit-product-price').value);
+            const imageUrl = document.getElementById('edit-product-image-url').value;
+            const isAvailable = document.getElementById('edit-product-is-available').checked;
+
+            if (!name || isNaN(price)) {
+                showNotification('error', '請輸入有效的商品名稱和價格。');
+                return;
+            }
+
+            try {
+                const productData = {
+                    name: name,
+                    description: description || null,
+                    price: price,
+                    image_url: imageUrl || null,
+                    is_available: isAvailable
+                };
+                await makeAdminApiRequest('PUT', `/products/${productId}`, productData);
+                showNotification('success', '商品更新成功！');
+                closeEditProductModal();
+                fetchAndDisplayProducts(); // Refresh list
+            } catch (error) {
+                showNotification('error', `更新商品失敗: ${error.message}`);
+            }
+          }
+
+          async function deleteProduct(productId) {
+            if (confirm('確定要刪除此商品嗎？此操作不可逆。')) {
+                try {
+                    await makeAdminApiRequest('DELETE', `/products/${productId}`);
+                    showNotification('success', '商品刪除成功！');
+                    fetchAndDisplayProducts(); // Refresh list
+                } catch (error) {
+                    showNotification('error', `刪除商品失敗: ${error.message}`);
+                }
+            }
+          }
+
+          // --- Order Management ---
+          let currentOrderDetailsId = null;
+
+          async function fetchAndDisplayOrders() {
+              const orderListDiv = document.getElementById('order-list');
+              orderListDiv.innerHTML = '<p class="text-center text-gray-500">載入訂單中...</p>';
+              try {
+                  const orders = await makeAdminApiRequest('GET', '/orders/');
+                  orderListDiv.innerHTML = ''; // Clear loading message
+
+                  if (orders.length === 0) {
+                      orderListDiv.innerHTML = '<p class="text-center text-gray-500">目前沒有任何訂單。</p>';
+                      return;
+                  }
+
+                  orders.forEach(order => {
+                      const orderItem = document.createElement('div');
+                      orderItem.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow-sm';
+                      orderItem.innerHTML = `
+                          <div>
+                              <p class="font-semibold">訂單 ID: ${order.id}</p>
+                              <p class="text-gray-600 text-sm">用戶: ${order.user.username} | 總金額: $${order.total_amount.toFixed(2)}</p>
+                              <p class="text-gray-600 text-sm">狀態: <span class="${order.status === 'completed' ? 'text-green-600' : order.status === 'cancelled' ? 'text-red-600' : 'text-orange-600'} font-bold">${order.status}</span></p>
+                          </div>
+                          <div>
+                              <button onclick="openOrderDetailsModal(${order.id})" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md mr-2">詳情</button>
+                              <button onclick="deleteOrder(${order.id})" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md">刪除</button>
+                          </div>
+                      `;
+                      orderListDiv.appendChild(orderItem);
+                  });
+              } catch (error) {
+                  showNotification('error', `載入訂單失敗: ${error.message}`);
+                  orderListDiv.innerHTML = `<p class="text-center text-red-500">無法載入訂單: ${error.message}</p>`;
+              }
+          }
+
+          async function openOrderDetailsModal(orderId) {
+            currentOrderDetailsId = orderId;
+            const detailOrderIdSpan = document.getElementById('detail-order-id');
+            const orderDetailsContent = document.getElementById('order-details-content');
+            const orderStatusSelect = document.getElementById('order-status-select');
+            const orderStatusOrderIdInput = document.getElementById('order-status-order-id');
+
+            detailOrderIdSpan.textContent = orderId;
+            orderDetailsContent.innerHTML = '<p>載入訂單詳情...</p>';
+
+            try {
+                const order = await makeAdminApiRequest('GET', `/orders/${orderId}`);
+                
+                orderDetailsContent.innerHTML = `
+                    <p><strong>用戶名:</strong> ${order.user.username}</p>
+                    <p><strong>電子郵件:</strong> ${order.user.email}</p>
+                    <p><strong>總金額:</strong> $${order.total_amount.toFixed(2)}</p>
+                    <p><strong>狀態:</strong> <span class="${order.status === 'completed' ? 'text-green-600' : order.status === 'cancelled' ? 'text-red-600' : 'text-orange-600'} font-bold">${order.status}</span></p>
+                    <p><strong>下單時間:</strong> ${new Date(order.created_at).toLocaleString()}</p>
+                    <p><strong>收件人:</strong> ${order.recipient_name} (${order.recipient_phone})</p>
+                    <p><strong>配送地址:</strong> ${order.shipping_address}</p>
+                    <p><strong>支付方式:</strong> ${order.payment_method}</p>
+                    <h4 class="font-semibold mt-4 mb-2">訂單項目:</h4>
+                    <ul class="list-disc pl-5">
+                        ${order.items.map(item => `
+                            <li>${item.product.name} x ${item.quantity} ($${(item.product.price * item.quantity).toFixed(2)})</li>
+                        `).join('')}
+                    </ul>
+                `;
+                orderStatusSelect.value = order.status;
+                orderStatusOrderIdInput.value = orderId;
+                document.getElementById('order-details-modal').classList.remove('hidden');
+            } catch (error) {
+                showNotification('error', `載入訂單詳情失敗: ${error.message}`);
+                orderDetailsContent.innerHTML = `<p class="text-center text-red-500">無法載入訂單詳情: ${error.message}</p>`;
+            }
+          }
+
+          function closeOrderDetailsModal() {
+            document.getElementById('order-details-modal').classList.add('hidden');
+            currentOrderDetailsId = null;
+          }
+
+          async function updateOrderStatus(event) {
+              event.preventDefault(); // Ensure form doesn't submit traditionally
+              const orderId = document.getElementById('order-status-order-id').value;
+              const newStatus = document.getElementById('order-status-select').value;
+
+              try {
+                  // The backend expects status as a query parameter
+                  await makeAdminApiRequest('PUT', `/orders/${orderId}/status?status=${newStatus}`);
+                  showNotification('success', '訂單狀態更新成功！');
+                  closeOrderDetailsModal();
+                  fetchAndDisplayOrders(); // Refresh order list
+              } catch (error) {
+                  showNotification('錯誤', `更新訂單狀態失敗: ${error.message}`);
+              }
+          }
+
+          async function deleteOrder(orderId) {
+              if (confirm('確定要刪除此訂單嗎？此操作不可逆。')) {
+                  try {
+                      await makeAdminApiRequest('DELETE', `/orders/${orderId}`);
+                      showNotification('成功', '訂單刪除成功！');
+                      fetchAndDisplayOrders(); // Refresh order list
+                  } catch (error) {
+                      showNotification('錯誤', `刪除訂單失敗: ${error.message}`);
+                  }
+              }
+          }
+
+          // --- Review Management ---
+          async function fetchAndDisplayReviews() {
+              const reviewListDiv = document.getElementById('review-list');
+              reviewListDiv.innerHTML = '<p class="text-center text-gray-500">載入評論中...</p>';
+              try {
+                  // Assuming you added a GET /api/reviews/ endpoint as suggested
+                  const reviews = await makeAdminApiRequest('GET', '/reviews/');
+                  reviewListDiv.innerHTML = ''; // Clear loading message
+
+                  if (reviews.length === 0) {
+                      reviewListDiv.innerHTML = '<p class="text-center text-gray-500">目前沒有任何評論。</p>';
+                      return;
+                  }
+
+                  reviews.forEach(review => {
+                      const reviewItem = document.createElement('div');
+                      reviewItem.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow-sm';
+                      reviewItem.innerHTML = `
+                          <div>
+                              <p class="font-semibold">用戶: ${review.user.username} | 商品: ${review.product.name}</p>
+                              <p class="text-gray-600 text-sm">評分: ${review.rating} | 評論: ${review.comment || '無評論內容'}</p>
+                              <p class="text-gray-600 text-sm">評論時間: ${new Date(review.created_at).toLocaleString()}</p>
+                          </div>
+                          <div>
+                              <button onclick="deleteReview(${review.id})" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md">刪除</button>
+                          </div>
+                      `;
+                      reviewListDiv.appendChild(reviewItem);
+                  });
+              } catch (error) {
+                  showNotification('error', `載入評論失敗: ${error.message}`);
+                  reviewListDiv.innerHTML = `<p class="text-center text-red-500">無法載入評論: ${error.message}</p>`;
+              }
+          }
+
+          async function deleteReview(reviewId) {
+              if (confirm('確定要刪除此評論嗎？此操作不可逆。')) {
+                  try {
+                      await makeAdminApiRequest('DELETE', `/reviews/${reviewId}`);
+                      showNotification('成功', '評論刪除成功！');
+                      fetchAndDisplayReviews(); // Refresh list
+                  } catch (error) {
+                      showNotification('錯誤', `刪除評論失敗: ${error.message}`);
+                  }
+              }
+          }
+
+
+          // --- User Management ---
+          async function fetchAndDisplayUsers() {
+              const userListDiv = document.getElementById('user-list');
+              userListDiv.innerHTML = '<p class="text-center text-gray-500">載入用戶中...</p>';
+              try {
+                  const users = await makeAdminApiRequest('GET', '/users/');
+                  userListDiv.innerHTML = ''; // Clear loading message
+
+                  if (users.length === 0) {
+                      userListDiv.innerHTML = '<p class="text-center text-gray-500">目前沒有任何用戶。</p>';
+                      return;
+                  }
+
+                  const currentLoggedInUserId = localStorage.getItem('currentUserId'); // Assuming you store this on login for safety
+                  // Or, if not storing currentUserId on frontend, prevent deleting the active admin through backend logic.
+
+                  users.forEach(user => {
+                      const userItem = document.createElement('div');
+                      userItem.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow-sm';
+                      // Prevent active admin from changing their own admin status or deleting themselves
+                      const isCurrentUser = user.id === currentLoggedInUserId; // This check needs currentUserId to be available
+
+                      userItem.innerHTML = `
+                          <div>
+                              <p class="font-semibold">用戶名: ${user.username}</p>
+                              <p class="text-gray-600 text-sm">Email: ${user.email}</p>
+                              <p class="text-gray-600 text-sm">全名: ${user.full_name || 'N/A'}</p>
+                              <div class="flex items-center mt-2">
+                                  <input type="checkbox" id="admin-toggle-${user.id}" class="mr-2"
+                                      ${user.is_admin ? 'checked' : ''}
+                                      onchange="toggleAdminStatus(${user.id}, this.checked)"
+                                      ${isCurrentUser ? 'disabled title="無法更改自己的管理員狀態"' : ''}>
+                                  <label for="admin-toggle-${user.id}" class="text-gray-700">管理員</label>
+                              </div>
+                          </div>
+                          <div>
+                              <button onclick="deleteUser(${user.id})" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md"
+                                  ${isCurrentUser ? 'disabled title="無法刪除自己"' : ''}>刪除</button>
+                          </div>
+                      `;
+                      userListDiv.appendChild(userItem);
+                  });
+                  // Store current user ID to prevent self-deletion/demotion (needs to be set on login in main.html as well)
+                  // For a proper check, the backend should also enforce not allowing an admin to delete/demote themselves.
+                  // For this to work robustly on the frontend, 'currentUserId' needs to be set when checking auth status or logging in.
+                  // E.g., in main.html checkAuthStatus(), after fetching currentUser, add localStorage.setItem('currentUserId', currentUser.id);
+                  if (localStorage.getItem('accessToken')) {
+                      makeAdminApiRequest('GET', '/auth/me').then(user => {
+                          localStorage.setItem('currentUserId', user.id);
+                          // Re-display users to update disabled state based on current user
+                          fetchAndDisplayUsers(); 
+                      }).catch(e => console.error("Could not get current user for admin panel user list:", e));
+                  }
+              } catch (error) {
+                  showNotification('錯誤', `載入用戶失敗: ${error.message}`);
+                  userListDiv.innerHTML = `<p class="text-center text-red-500">無法載入用戶: ${error.message}</p>`;
+              }
+          }
+
+          async function toggleAdminStatus(userId, isChecked) {
+              try {
+                  await makeAdminApiRequest('PUT', `/users/${userId}/admin`, { is_admin: isChecked });
+                  showNotification('成功', '用戶管理員狀態更新成功！');
+                  await fetchAndDisplayUsers(); // Refresh the user list
+              } catch (error) {
+                  showNotification('錯誤', `更新管理員狀態失敗: ${error.message}`);
+                  // Revert checkbox on error
+                  document.getElementById(`admin-toggle-${userId}`).checked = !isChecked;
+              }
+          }
+
+          async function deleteUser(userId) {
+              if (confirm('確定要刪除此用戶嗎？此操作不可逆。')) {
+                  try {
+                      await makeAdminApiRequest('DELETE', `/users/${userId}`);
+                      showNotification('成功', '用戶刪除成功！');
+                      await fetchAndDisplayUsers(); // Refresh the user list
+                  } catch (error) {
+                      showNotification('錯誤', `刪除用戶失敗: ${error.message}`);
+                  }
+              }
+          }
+
+
+          // --- Event Listeners and Initial Load ---
+          document.addEventListener("DOMContentLoaded", () => {
+            checkAdminStatus(); // Check admin status on page load
+            // The dashboard tab is set to be displayed by default in HTML,
+            // so loadTabContent('dashboard') is not strictly needed here if
+            // the initial display is handled by HTML and no dynamic content is loaded there.
+            // If dashboard needs dynamic content, uncomment: loadTabContent("dashboard");
+
+            // Event listener for the order status form in the modal
+            // This is already attached in the HTML, ensure it's correct
+            // document.getElementById('order-status-form').addEventListener('submit', updateOrderStatus);
+          });
+        </script>
+      </body>
+    </html>

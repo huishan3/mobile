@@ -1,0 +1,56 @@
+# my-coffee-store/docker-compose.yml
+
+version: '3.8' # 指定 Docker Compose 檔案格式的版本
+
+services:
+  # 1. 資料庫服務 (PostgreSQL)
+  db:
+    image: postgres:14-alpine # 使用 PostgreSQL 14 的輕量級 Alpine 映像
+    container_name: coffee_db # 為容器指定一個名稱
+    environment: # 設定資料庫的環境變數
+      POSTGRES_DB: ${POSTGRES_DB}       # 資料庫名稱，從 .env 讀取
+      POSTGRES_USER: ${POSTGRES_USER}   # 資料庫使用者名稱，從 .env 讀取
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # 資料庫密碼，從 .env 讀取
+    volumes:
+      - db_data:/var/lib/postgresql/data # 將資料庫數據持久化到具名數據卷
+    ports:
+      - "5432:5432" # 將容器的 5432 端口映射到主機的 5432 端口 (可選，便於外部工具連接)
+    healthcheck: # 健康檢查，確保資料庫完全啟動並準備好接受連接
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped # 容器退出時自動重啟，除非手動停止
+
+  # 2. 後端服務 (FastAPI)
+  backend:
+    build: ./backend # 從 ./backend 目錄下的 Dockerfile 構建映像
+    container_name: coffee_backend # 為容器指定一個名稱
+    # command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"] # 這是 FastAPI 的啟動命令
+    # 執行 migration 並啟動應用程式的命令
+    command: >
+      sh -c "python -c 'from app.database import Base, engine; Base.metadata.create_all(bind=engine)' && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000" # 將容器的 8000 端口映射到主機的 8000 端口
+    environment: # 設定後端服務的環境變數
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}" # 資料庫連接字串
+      SECRET_KEY: ${SECRET_KEY} # JWT 密鑰
+    depends_on: # 依賴關係，確保 db 服務啟動並健康後才啟動 backend
+      db:
+        condition: service_healthy # 確保 db 服務的健康檢查通過
+    volumes:
+      - ./backend:/app # 將主機的 ./backend 資料夾掛載到容器的 /app，方便開發時代碼即時生效
+    restart: unless-stopped
+
+  # 3. 前端服務 (Nginx 提供靜態文件)
+  frontend:
+    image: nginx:alpine
+    container_name: coffee_frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html # 確保此行存在
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # <--- 請再次確認這行是否存在且正確
+    depends_on:
+      - backend
+    restart: unless-stopped
